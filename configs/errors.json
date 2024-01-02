@@ -1,0 +1,10 @@
+[
+    {
+        "error": "not found",
+        "http_status": 404
+    },
+    {
+        "error": "method not allowed",
+        "http_status": 405
+    }
+]

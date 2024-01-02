@@ -1,0 +1,50 @@
+{
+    "server": {
+        "service": {
+            "host": "localhost",
+            "port": "8080"
+        },
+        
+        "pprof": {
+            "host": "localhost",
+            "port": "6060"
+        }
+    },
+
+    "logger": {
+        "level": "debug",
+        "json": false
+    },
+
+    "token": {
+        "secret": "victoria",
+        "exp_minutes": 60
+    },
+
+    "database": {
+        "postgres": {
+            "host": "localhost",
+            "port": 5432,
+            "user": "postgres",
+            "password": "postgres",
+            "database": "cars_api",
+            "sslmode": "disable",
+            "max_open_conns": 1000,
+            "max_idle_conns": 50,
+            "conn_max_lifetime": 50,
+            "conn_max_idle_time": 50
+        },
+        
+        "redis": {
+            "host": "localhost",
+            "port": 6379,
+            "password": "",
+            "database": 0,
+
+            "session": {
+                "key_prefix": "session",
+                "exp_minutes": 43200
+            }
+        }
+    }
+}
