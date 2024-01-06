@@ -1,12 +1,12 @@
 {
     "server": {
         "service": {
-            "host": "localhost",
+            "host": "0.0.0.0",
             "port": "8080"
         },
-        
+
         "pprof": {
-            "host": "localhost",
+            "host": "0.0.0.0",
             "port": "6060"
         }
     },
@@ -23,10 +23,10 @@
 
     "database": {
         "postgres": {
-            "host": "localhost",
+            "host": "postgres",
             "port": 5432,
-            "user": "postgres",
-            "password": "postgres",
+            "user": "cars",
+            "password": "cars",
             "database": "cars_api",
             "sslmode": "disable",
             "max_open_conns": 1000,
@@ -36,7 +36,7 @@
         },
         
         "redis": {
-            "host": "localhost",
+            "host": "redis",
             "port": 6379,
             "password": "",
             "database": 0,

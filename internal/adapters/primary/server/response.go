@@ -8,6 +8,18 @@ import (
 	"github.com/mailru/easyjson"
 )
 
+// General response struct.
+type Response struct {
+	Response any           `json:"response"`
+	Error    ErrorResponse `json:"error"`
+}
+
+// General error response struct.
+type ErrorResponse struct {
+	Code    uint32 `json:"code"`
+	Message string `json:"message"`
+}
+
 // mapResponse provides a response mapping.
 func mapResponse(data any, err error) (int, []byte) {
 	var res []byte

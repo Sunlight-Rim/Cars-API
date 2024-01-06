@@ -20,7 +20,6 @@ func LoggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
 		LogUserAgent: true,
 		LogError:     true,
 
-		// Calls after next(c)
 		LogValuesFunc: func(c echo.Context, values echomw.RequestLoggerValues) error {
 			errLocation, _ := errors.GetLocation(values.Error)
 

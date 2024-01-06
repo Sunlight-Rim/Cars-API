@@ -26,13 +26,15 @@ func Start() {
 	redis := connectRedis()
 
 	// Init services
-	users := usersUsecase.New(
-		usersRepository.New(postgres),
-		tokenService.New(redis),
-	)
+	var (
+		users = usersUsecase.New(
+			usersRepository.New(postgres),
+			tokenService.New(redis),
+		)
 
-	cars := carsUsecase.New(
-		carsRepository.New(postgres),
+		cars = carsUsecase.New(
+			carsRepository.New(postgres),
+		)
 	)
 
 	// Init server

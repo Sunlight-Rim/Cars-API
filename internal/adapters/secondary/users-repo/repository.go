@@ -15,11 +15,14 @@ func New(postgres *sql.DB) *repository {
 	}
 }
 
-func (r *repository) Register(req *usersDomain.RepoReqRegister) error
-func (r *repository) Login(req *usersDomain.RepoReqLogin) (*usersDomain.RepoResLogin, error)
-func (r *repository) Logout(req *usersDomain.RepoReqLogout) error
-func (r *repository) Refresh(req *usersDomain.RepoReqRefresh) (*usersDomain.RepoResRefresh, error)
-func (r *repository) Get(req *usersDomain.RepoReqGet) (*usersDomain.RepoResGet, error)
-func (r *repository) UpdateInfo(req *usersDomain.RepoReqUpdateInfo) error
-func (r *repository) UpdatePassword(req *usersDomain.RepoReqUpdatePassword) error
-func (r *repository) Delete(req *usersDomain.RepoReqDelete) error
+func (r *repository) Signup(req *usersDomain.RepoReqSignup) error { return nil }
+func (r *repository) Signin(req *usersDomain.RepoReqSignin) (*usersDomain.RepoResSignin, error) {
+	return nil, nil
+}
+func (r *repository) Signout(req *usersDomain.RepoReqSignout) error { return nil }
+func (r *repository) Get(req *usersDomain.RepoReqGet) (*usersDomain.RepoResGet, error) {
+	return nil, nil
+}
+func (r *repository) UpdateInfo(req *usersDomain.RepoReqUpdateInfo) error         { return nil }
+func (r *repository) UpdatePassword(req *usersDomain.RepoReqUpdatePassword) error { return nil }
+func (r *repository) Delete(req *usersDomain.RepoReqDelete) error                 { return nil }

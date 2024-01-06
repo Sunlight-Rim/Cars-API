@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  api:
+    container_name: cars-api
+    restart: always
+    build:
+      context: .
+      dockerfile: ./dockerfile
+    ports:
+      - 1337:8080
+      - 6060:6060
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    container_name: cars-postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=cars_api
+      - POSTGRES_USER=cars
+      - POSTGRES_PASSWORD=cars
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    container_name: cars-redis
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+        - "6379:6379"
+    volumes:
+        - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: cars-swagger
+    environment:
+      - SWAGGER_JSON=/doc/swagger.json
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./doc/swagger.json:/doc/swagger.json

@@ -15,14 +15,16 @@ import (
 )
 
 type server struct {
-	echo    *echo.Echo
+	echo *echo.Echo
+
 	rest    *rest.Service
 	graphql *graphql.Service
 }
 
 func New(rest *rest.Service, graphql *graphql.Service) *server {
 	s := server{
-		echo:    echo.New(),
+		echo: echo.New(),
+
 		rest:    rest,
 		graphql: graphql,
 	}
@@ -46,7 +48,7 @@ func New(rest *rest.Service, graphql *graphql.Service) *server {
 	return &s
 }
 
-// Start starts the server.
+// Start starts server.
 func (s *server) Start() error {
 	return s.echo.Start(fmt.Sprintf(
 		"%s:%s",
@@ -55,7 +57,7 @@ func (s *server) Start() error {
 	))
 }
 
-// StartPprof starts handling pprof profiler.
+// StartPprof starts pprof profiler.
 func (s *server) StartPprof() error {
 	e := echo.New()
 	e.HideBanner = true

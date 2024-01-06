@@ -14,11 +14,17 @@ func New(repo usersDomain.IRepository, token usersDomain.IToken) *usecase {
 	}
 }
 
-func (u *usecase) Register(req *usersDomain.UcaseReqRegister) error
-func (u *usecase) Login(req *usersDomain.UcaseReqLogin) (*usersDomain.UcaseResLogin, error)
-func (u *usecase) Logout(req *usersDomain.UcaseReqLogout) error
-func (u *usecase) Refresh(req *usersDomain.UcaseReqRefresh) (*usersDomain.UcaseResRefresh, error)
-func (u *usecase) Get(req *usersDomain.UcaseReqGet) (*usersDomain.UcaseResGet, error)
-func (u *usecase) UpdateInfo(req *usersDomain.UcaseReqUpdateInfo) error
-func (u *usecase) UpdatePassword(req *usersDomain.UcaseReqUpdatePassword) error
-func (u *usecase) Delete(req *usersDomain.UcaseReqDelete) error
+func (u *usecase) Signup(req *usersDomain.UcaseReqSignup) error { return nil }
+func (u *usecase) Signin(req *usersDomain.UcaseReqSignin) (*usersDomain.UcaseResSignin, error) {
+	return nil, nil
+}
+func (u *usecase) Signout(req *usersDomain.UcaseReqSignout) error { return nil }
+func (u *usecase) Refresh(req *usersDomain.UcaseReqRefresh) (*usersDomain.UcaseResRefresh, error) {
+	return nil, nil
+}
+func (u *usecase) Get(req *usersDomain.UcaseReqGet) (*usersDomain.UcaseResGet, error) {
+	return nil, nil
+}
+func (u *usecase) UpdateInfo(req *usersDomain.UcaseReqUpdateInfo) error         { return nil }
+func (u *usecase) UpdatePassword(req *usersDomain.UcaseReqUpdatePassword) error { return nil }
+func (u *usecase) Delete(req *usersDomain.UcaseReqDelete) error                 { return nil }

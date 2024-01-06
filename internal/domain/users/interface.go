@@ -3,9 +3,9 @@ package usersDomain
 // Usecase
 
 type IUsecase interface {
-	Register(*UcaseReqRegister) error
-	Login(*UcaseReqLogin) (*UcaseResLogin, error)
-	Logout(*UcaseReqLogout) error
+	Signup(*UcaseReqSignup) error
+	Signin(*UcaseReqSignin) (*UcaseResSignin, error)
+	Signout(*UcaseReqSignout) error
 	Refresh(*UcaseReqRefresh) (*UcaseResRefresh, error)
 
 	Get(*UcaseReqGet) (*UcaseResGet, error)
@@ -17,10 +17,9 @@ type IUsecase interface {
 // Repository
 
 type IRepository interface {
-	Register(*RepoReqRegister) error
-	Login(*RepoReqLogin) (*RepoResLogin, error)
-	Logout(*RepoReqLogout) error
-	Refresh(*RepoReqRefresh) (*RepoResRefresh, error)
+	Signup(*RepoReqSignup) error
+	Signin(*RepoReqSignin) (*RepoResSignin, error)
+	Signout(*RepoReqSignout) error
 
 	Get(*RepoReqGet) (*RepoResGet, error)
 	UpdateInfo(*RepoReqUpdateInfo) error

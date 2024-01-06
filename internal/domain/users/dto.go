@@ -2,22 +2,22 @@ package usersDomain
 
 // Usecase
 
-type UcaseReqRegister struct {
+type UcaseReqSignup struct {
 	Username string
 	Email    string
 	Address  string
 }
 
-type UcaseReqLogin struct {
+type UcaseReqSignin struct {
 	Email    string
 	Password string
 }
 
-type UcaseResLogin struct {
+type UcaseResSignin struct {
 	Token string
 }
 
-type UcaseReqLogout struct {
+type UcaseReqSignout struct {
 	Token string
 }
 
@@ -54,30 +54,22 @@ type UcaseReqDelete struct {
 
 // Repository
 
-type RepoReqRegister struct {
+type RepoReqSignup struct {
 	Username string
 	Email    string
 	Address  string
 }
 
-type RepoReqLogin struct {
+type RepoReqSignin struct {
 	Email    string
 	Password string
 }
 
-type RepoResLogin struct {
+type RepoResSignin struct {
 	Token string
 }
 
-type RepoReqLogout struct {
-	Token string
-}
-
-type RepoReqRefresh struct {
-	Token string
-}
-
-type RepoResRefresh struct {
+type RepoReqSignout struct {
 	Token string
 }
 
