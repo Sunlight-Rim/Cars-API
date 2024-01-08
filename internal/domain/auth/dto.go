@@ -44,13 +44,6 @@ type RepoSigninRes struct {
 	ID uint64
 }
 
-func (r *SigninReq) ToRepo() *RepoSigninReq {
-	return &RepoSigninReq{
-		Email:    r.Email,
-		Password: r.Password,
-	}
-}
-
 // Signout
 
 type SignoutReq struct {

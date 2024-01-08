@@ -24,15 +24,6 @@ type RepoCreateRes struct {
 	*Car
 }
 
-func (r *CreateReq) ToRepo() *RepoCreateReq {
-	return &RepoCreateReq{
-		Token: r.Token,
-		Plate: r.Plate,
-		Model: r.Model,
-		Color: r.Color,
-	}
-}
-
 // Get
 
 type GetReq struct {

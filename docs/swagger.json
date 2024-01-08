@@ -97,7 +97,10 @@
         "operationId": "none",
         "responses": {
           "200": {
-            "$ref": "#/responses/HealthResponse"
+            "description": "string",
+            "schema": {
+              "$ref": "#/definitions/string"
+            }
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -160,18 +163,6 @@
               }
             },
             "x-go-name": "Response"
-          }
-        }
-      }
-    },
-    "HealthResponse": {
-      "description": "Health status.",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "Alive": {
-            "type": "string",
-            "example": "\"Alive!\""
           }
         }
       }

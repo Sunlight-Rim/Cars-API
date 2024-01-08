@@ -8,4 +8,4 @@ errors:
 
 # Generate swagger docs
 documentation:
-	@swagger generate spec -m -o docs/swagger.json
+	@docker run --rm -v $(pwd):/source -w /source quay.io/goswagger/swagger:0.30.3 generate spec -m -o ./docs/swagger.json

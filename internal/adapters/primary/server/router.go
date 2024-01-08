@@ -7,10 +7,10 @@ API with CRUD-operations on Users and his Cars.
 		host: localhost:1337
 		schemes: http
 	    consumes:
-	        - application/json
+	    - application/json
 
 	    produces:
-	        - application/json
+	    - application/json
 
 	    securityDefinitions:
 	    accessToken:
@@ -52,7 +52,7 @@ func (s *server) setRoutes() {
 
 			schemes: https
 			responses:
-				200: HealthResponse
+				200: body:string
 				default: ErrorResponse
 	*/
 	s.echo.GET("/health", func(ctx echo.Context) error {

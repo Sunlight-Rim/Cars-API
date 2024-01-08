@@ -27,16 +27,6 @@ type ErrorsListResponse struct {
 	} `json:"body"`
 }
 
-// Health status.
-// swagger:response HealthResponse
-type HealthResponse struct {
-	// in: body
-	Body struct {
-		// example: "Alive!"
-		Alive string `json:"Alive"`
-	} `json:"body"`
-}
-
 // Successfully registered.
 // swagger:response SignupResponse
 type SignupResponse struct {
