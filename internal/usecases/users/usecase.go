@@ -1,30 +1,24 @@
-package usersUsecase
+package users
 
-import usersDomain "cars/internal/domain/users"
+import usersEntity "cars/internal/entities/users"
 
-type usecase struct {
-	repo  usersDomain.IRepository
-	token usersDomain.IToken
+type Usecase struct {
+	repo usersEntity.IRepository
 }
 
-func New(repo usersDomain.IRepository, token usersDomain.IToken) *usecase {
-	return &usecase{
-		repo:  repo,
-		token: token,
+func New(repo usersEntity.IRepository) *Usecase {
+	return &Usecase{
+		repo: repo,
 	}
 }
 
-func (u *usecase) Signup(req *usersDomain.UcaseReqSignup) error { return nil }
-func (u *usecase) Signin(req *usersDomain.UcaseReqSignin) (*usersDomain.UcaseResSignin, error) {
+func (uc *Usecase) Get(req *usersEntity.UsecaseReqGet) (*usersEntity.UsecaseResGet, error) {
 	return nil, nil
 }
-func (u *usecase) Signout(req *usersDomain.UcaseReqSignout) error { return nil }
-func (u *usecase) Refresh(req *usersDomain.UcaseReqRefresh) (*usersDomain.UcaseResRefresh, error) {
+func (uc *Usecase) UpdateInfo(req *usersEntity.UsecaseReqUpdateInfo) (*usersEntity.UsecaseResUpdateInfo, error) {
 	return nil, nil
 }
-func (u *usecase) Get(req *usersDomain.UcaseReqGet) (*usersDomain.UcaseResGet, error) {
+func (uc *Usecase) UpdatePassword(req *usersEntity.UsecaseReqUpdatePassword) error { return nil }
+func (uc *Usecase) Delete(req *usersEntity.UsecaseReqDelete) (*usersEntity.UsecaseResDelete, error) {
 	return nil, nil
 }
-func (u *usecase) UpdateInfo(req *usersDomain.UcaseReqUpdateInfo) error         { return nil }
-func (u *usecase) UpdatePassword(req *usersDomain.UcaseReqUpdatePassword) error { return nil }
-func (u *usecase) Delete(req *usersDomain.UcaseReqDelete) error                 { return nil }

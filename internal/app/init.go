@@ -4,6 +4,13 @@ import (
 	"flag"
 	"os"
 
+	authRepository "cars/internal/adapters/secondary/auth-repository"
+	carsRepository "cars/internal/adapters/secondary/cars-repository"
+	tokenService "cars/internal/adapters/secondary/token-service"
+	usersRepository "cars/internal/adapters/secondary/users-repository"
+	"cars/internal/usecases/auth"
+	"cars/internal/usecases/cars"
+	"cars/internal/usecases/users"
 	"cars/pkg/postgres"
 	"cars/pkg/redis"
 	"database/sql"
@@ -91,4 +98,26 @@ func connectRedis() *goRedis.Client {
 	}
 
 	return client
+}
+
+// New Auth usecase with adapters.
+func newAuth(postrges *sql.DB, redis *goRedis.Client) *auth.Usecase {
+	return auth.New(
+		authRepository.New(postrges),
+		tokenService.New(redis),
+	)
+}
+
+// New Users usecase with adapters.
+func newUsers(postrges *sql.DB) *users.Usecase {
+	return users.New(
+		usersRepository.New(postrges),
+	)
+}
+
+// New Cars usecase with adapters.
+func newCars(postrges *sql.DB) *cars.Usecase {
+	return cars.New(
+		carsRepository.New(postrges),
+	)
 }

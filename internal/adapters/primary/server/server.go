@@ -7,6 +7,10 @@ import (
 
 	"cars/internal/adapters/primary/graphql"
 	"cars/internal/adapters/primary/rest"
+	"cars/internal/adapters/primary/rest/response"
+	authEntity "cars/internal/entities/auth"
+	carsEntity "cars/internal/entities/cars"
+	usersEntity "cars/internal/entities/users"
 	"cars/pkg/errors"
 
 	"github.com/labstack/echo/v4"
@@ -21,12 +25,12 @@ type server struct {
 	graphql *graphql.Service
 }
 
-func New(rest *rest.Service, graphql *graphql.Service) *server {
+func New(auth authEntity.IUsecase, users usersEntity.IUsecase, cars carsEntity.IUsecase) *server {
 	s := server{
 		echo: echo.New(),
 
-		rest:    rest,
-		graphql: graphql,
+		rest:    rest.New(auth, users, cars),
+		graphql: graphql.New(auth, users, cars),
 	}
 
 	s.echo.Use(echomw.Recover(), echomw.RequestID(), LoggerMW())
@@ -37,10 +41,10 @@ func New(rest *rest.Service, graphql *graphql.Service) *server {
 		if httpError, ok := err.(*echo.HTTPError); ok {
 			switch httpError.Code {
 			case http.StatusNotFound:
-				c.JSONBlob(mapResponse(nil, errors.NotFound))
+				c.JSONBlob(response.Map(nil, errors.NotFound))
 
 			case http.StatusMethodNotAllowed:
-				c.JSONBlob(mapResponse(nil, errors.MethodNotAllowed))
+				c.JSONBlob(response.Map(nil, errors.MethodNotAllowed))
 			}
 		}
 	}
@@ -48,7 +52,7 @@ func New(rest *rest.Service, graphql *graphql.Service) *server {
 	return &s
 }
 
-// Start starts server.
+// Start server.
 func (s *server) Start() error {
 	return s.echo.Start(fmt.Sprintf(
 		"%s:%s",
@@ -57,21 +61,7 @@ func (s *server) Start() error {
 	))
 }
 
-// StartPprof starts pprof profiler.
-func (s *server) StartPprof() error {
-	e := echo.New()
-	e.HideBanner = true
-
-	e.GET("/debug/*", echo.WrapHandler(http.DefaultServeMux))
-
-	return e.Start(fmt.Sprintf(
-		"%s:%s",
-		viper.GetString("server.pprof.host"),
-		viper.GetString("server.pprof.port"),
-	))
-}
-
-// Shutdown provides server gracefully shutdown.
+// Gracefully shutdown server.
 func (s *server) Shutdown(ctx context.Context) error {
 	if err := s.echo.Shutdown(ctx); err != nil {
 		return errors.Wrap(err, "echo shutdown")

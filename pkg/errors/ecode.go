@@ -10,30 +10,42 @@ const unknown = "unknown"
 //   return ctx.JSONBlob(http.StatusOK, errors.ResponseList)
 // })
 var ResponseList []byte = []byte(`{
+    "1447728996": {
+        "en": "Invalid request content"
+    },
     "2213895429": {
         "en": "Method not allowed"
     },
     "3232214746": {
         "en": "Not found"
+    },
+    "3233457132": {
+        "en": "Invalid request format"
     }
 }`) // `
 
 // Error codes
 const (
-	CodeNotFound         uint32 = 3232214746
-	CodeMethodNotAllowed uint32 = 2213895429
+	CodeNotFound              uint32 = 3232214746
+	CodeMethodNotAllowed      uint32 = 2213895429
+	CodeInvalidRequestFormat  uint32 = 3233457132
+	CodeInvalidRequestContent uint32 = 1447728996
 )
 
 // Error Variables
 var (
-	NotFound         error = New("not found", CodeNotFound)
-	MethodNotAllowed error = New("method not allowed", CodeMethodNotAllowed)
+	NotFound              error = New("not found", CodeNotFound)
+	MethodNotAllowed      error = New("method not allowed", CodeMethodNotAllowed)
+	InvalidRequestFormat  error = New("invalid request format", CodeInvalidRequestFormat)
+	InvalidRequestContent error = New("invalid request content", CodeInvalidRequestContent)
 )
 
 // Hash map data by error codes
 var HttpResponse = map[uint32]map[string]any{
 	3232214746: {"status": 404, "text": "Not found"},
 	2213895429: {"status": 405, "text": "Method not allowed"},
+	3233457132: {"status": 400, "text": "Invalid request format"},
+	1447728996: {"status": 422, "text": "Invalid request content"},
 }
 
 // GetHTTPErrData returning http status, error message and error code

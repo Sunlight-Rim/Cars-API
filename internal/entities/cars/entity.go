@@ -1,4 +1,4 @@
-package carsDomain
+package carsEntity
 
 type Car struct {
 	ID    uint64

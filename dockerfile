@@ -1,3 +1,5 @@
+# Build stage
+
 FROM golang:alpine3.19 AS builder
 
 WORKDIR /app
@@ -5,6 +7,8 @@ WORKDIR /app
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s" -o ./build/cars-api ./cmd/api/main.go
+
+# Run stage
 
 FROM alpine:3 AS main
 

@@ -1,17 +1,20 @@
 package graphql
 
 import (
-	carsDomain "cars/internal/domain/cars"
-	usersDomain "cars/internal/domain/users"
+	authEntity "cars/internal/entities/auth"
+	carsEntity "cars/internal/entities/cars"
+	usersEntity "cars/internal/entities/users"
 )
 
 type Service struct {
-	users usersDomain.IUsecase
-	cars  carsDomain.IUsecase
+	auth  authEntity.IUsecase
+	users usersEntity.IUsecase
+	cars  carsEntity.IUsecase
 }
 
-func New(users usersDomain.IUsecase, cars carsDomain.IUsecase) *Service {
+func New(auth authEntity.IUsecase, users usersEntity.IUsecase, cars carsEntity.IUsecase) *Service {
 	return &Service{
+		auth:  auth,
 		users: users,
 		cars:  cars,
 	}

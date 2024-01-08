@@ -1,18 +1,26 @@
-package carsUsecase
+package cars
 
-import carsDomain "cars/internal/domain/cars"
+import carsEntity "cars/internal/entities/cars"
 
-type usecase struct {
-	repo carsDomain.IRepository
+type Usecase struct {
+	repo carsEntity.IRepository
 }
 
-func New(repo carsDomain.IRepository) *usecase {
-	return &usecase{
+func New(repo carsEntity.IRepository) *Usecase {
+	return &Usecase{
 		repo: repo,
 	}
 }
 
-func (u *usecase) Create(req *carsDomain.UcaseReqCreate) error                      { return nil }
-func (u *usecase) Get(req *carsDomain.UcaseReqGet) (*carsDomain.UcaseResGet, error) { return nil, nil }
-func (u *usecase) UpdateColor(req *carsDomain.UcaseReqUpdateColor) error            { return nil }
-func (u *usecase) Delete(req *carsDomain.UcaseReqDelete) error                      { return nil }
+func (uc *Usecase) Create(req *carsEntity.UsecaseReqCreate) (*carsEntity.UsecaseResCreate, error) {
+	return nil, nil
+}
+func (uc *Usecase) Get(req *carsEntity.UsecaseReqGet) (*carsEntity.UsecaseResGet, error) {
+	return nil, nil
+}
+func (uc *Usecase) UpdateColor(req *carsEntity.UsecaseReqUpdateColor) (*carsEntity.UsecaseResUpdateColor, error) {
+	return nil, nil
+}
+func (uc *Usecase) Delete(req *carsEntity.UsecaseReqDelete) (*carsEntity.UsecaseResDelete, error) {
+	return nil, nil
+}

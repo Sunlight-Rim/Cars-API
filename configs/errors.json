@@ -6,5 +6,14 @@
     {
         "error": "method not allowed",
         "http_status": 405
+    },
+
+    {
+        "error": "invalid request format",
+        "http_status": 400
+    },
+    {
+        "error": "invalid request content",
+        "http_status": 422
     }
 ]
