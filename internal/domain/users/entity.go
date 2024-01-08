@@ -1,4 +1,4 @@
-package usersEntity
+package users
 
 type User struct {
 	ID       uint64

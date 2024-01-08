@@ -8,9 +8,9 @@ import (
 	"cars/internal/adapters/primary/graphql"
 	"cars/internal/adapters/primary/rest"
 	"cars/internal/adapters/primary/rest/response"
-	authEntity "cars/internal/entities/auth"
-	carsEntity "cars/internal/entities/cars"
-	usersEntity "cars/internal/entities/users"
+	"cars/internal/domain/auth"
+	"cars/internal/domain/cars"
+	"cars/internal/domain/users"
 	"cars/pkg/errors"
 
 	"github.com/labstack/echo/v4"
@@ -25,7 +25,7 @@ type server struct {
 	graphql *graphql.Service
 }
 
-func New(auth authEntity.IUsecase, users usersEntity.IUsecase, cars carsEntity.IUsecase) *server {
+func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
 	s := server{
 		echo: echo.New(),
 
@@ -33,7 +33,7 @@ func New(auth authEntity.IUsecase, users usersEntity.IUsecase, cars carsEntity.I
 		graphql: graphql.New(auth, users, cars),
 	}
 
-	s.echo.Use(echomw.Recover(), echomw.RequestID(), LoggerMW())
+	s.echo.Use(echomw.CORS(), echomw.Recover(), echomw.RequestID(), LoggerMW())
 	s.setRoutes()
 
 	// Custom Echo error handler

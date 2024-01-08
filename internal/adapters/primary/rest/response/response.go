@@ -1,5 +1,7 @@
 package response
 
+import "cars/internal/domain/auth"
+
 // General response struct.
 type Response struct {
 	Response any           `json:"response"`
@@ -12,6 +14,12 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+// Signup
+
 type Signup struct {
 	ID uint64
+}
+
+func NewSignup(r *auth.SignupRes) *Signup {
+	return &Signup{ID: r.ID}
 }

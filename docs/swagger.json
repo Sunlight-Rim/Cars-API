@@ -1,0 +1,203 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "API with CRUD-operations on Users and his Cars.",
+    "title": "Cars API",
+    "version": "0.1"
+  },
+  "host": "localhost:1337",
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "description": "Password must contain at least one special character in a range [.,\\(\\);:\\\\\\/\\[\\]\\{\\}@$!%*#?\u0026=].",
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user account.",
+        "operationId": "SignupRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "x-go-name": "Address"
+                },
+                "email": {
+                  "type": "string",
+                  "x-go-name": "Email"
+                },
+                "password": {
+                  "type": "string",
+                  "x-go-name": "Password"
+                },
+                "username": {
+                  "type": "string",
+                  "x-go-name": "Username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SignupResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/errors": {
+      "get": {
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "Errors"
+        ],
+        "summary": "List of API errors.",
+        "operationId": "none",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ErrorsListResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health check.",
+        "operationId": "none",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/HealthResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Signup": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "uint64"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    }
+  },
+  "responses": {
+    "ErrorResponse": {
+      "description": "General errors model. Response is null.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "format": "int64",
+                "x-go-name": "Code"
+              },
+              "message": {
+                "type": "string",
+                "x-go-name": "Message"
+              }
+            },
+            "x-go-name": "Error"
+          },
+          "response": {
+            "x-go-name": "Response",
+            "example": "null"
+          }
+        }
+      }
+    },
+    "ErrorsListResponse": {
+      "description": "A list of errors containing error codes and text descriptions.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "x-go-name": "Language"
+              }
+            },
+            "x-go-name": "Response"
+          }
+        }
+      }
+    },
+    "HealthResponse": {
+      "description": "Health status.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "Alive": {
+            "type": "string",
+            "example": "\"Alive!\""
+          }
+        }
+      }
+    },
+    "SignupResponse": {
+      "description": "Successfully registered.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/Signup"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "accessToken": {
+      "description": "JWT authorization token stored in a cookie.",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "cookie"
+    }
+  }
+}

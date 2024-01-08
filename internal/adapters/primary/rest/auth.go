@@ -27,11 +27,11 @@ func (s *Service) Signup(ctx echo.Context) (err error) {
 	}
 
 	// Call usecase
-	id, err := s.auth.Signup(req.ToEntity())
+	resEntity, err := s.auth.Signup(req.ToEntity())
 	if err != nil {
 		return errors.Wrap(err, "signup")
 	}
 
-	res = response.NewSignup(id)
+	res = response.NewSignup(resEntity)
 	return nil
 }

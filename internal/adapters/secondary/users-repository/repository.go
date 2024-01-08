@@ -1,7 +1,7 @@
 package usersRepository
 
 import (
-	usersEntity "cars/internal/entities/users"
+	"cars/internal/domain/users"
 	"database/sql"
 )
 
@@ -15,13 +15,13 @@ func New(postgres *sql.DB) *repository {
 	}
 }
 
-func (r *repository) Get(req *usersEntity.RepositoryReqGet) (*usersEntity.RepositoryResGet, error) {
+func (r *repository) Get(req *users.RepoGetReq) (*users.RepoGetRes, error) {
 	return nil, nil
 }
-func (r *repository) UpdateInfo(req *usersEntity.RepositoryReqUpdateInfo) (*usersEntity.RepositoryResUpdateInfo, error) {
+func (r *repository) UpdateInfo(req *users.RepoUpdateInfoReq) (*users.RepoUpdateInfoRes, error) {
 	return nil, nil
 }
-func (r *repository) UpdatePassword(req *usersEntity.RepositoryReqUpdatePassword) error { return nil }
-func (r *repository) Delete(req *usersEntity.RepositoryReqDelete) (*usersEntity.RepositoryResDelete, error) {
+func (r *repository) UpdatePassword(req *users.RepoUpdatePasswordReq) error { return nil }
+func (r *repository) Delete(req *users.RepoDeleteReq) (*users.RepoDeleteRes, error) {
 	return nil, nil
 }

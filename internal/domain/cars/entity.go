@@ -1,4 +1,4 @@
-package carsEntity
+package cars
 
 type Car struct {
 	ID    uint64

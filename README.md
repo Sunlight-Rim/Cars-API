@@ -4,7 +4,7 @@ Example Go application with Clean Architecture pattern. \
 Contains CRUD operations for Users and Cars services.
 
 
-![Scheme](https://i.ibb.co/gRSkL8X/cars-scheme.jpg)
+![Scheme](https://i.ibb.co/MMmCPhX/cars-scheme.jpg)
 
 ### Run
 
@@ -37,5 +37,5 @@ Pprof available at [localhost:6060](http://localhost:6060/)
 
 For generating custom errors add their description to the **[errors.json](configs/errors.json)** and run:
 ```bash
-make egen
+make errors
 ```

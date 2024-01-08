@@ -21,6 +21,9 @@ var ResponseList []byte = []byte(`{
     },
     "3233457132": {
         "en": "Invalid request format"
+    },
+    "683930722": {
+        "en": "Email is busy"
     }
 }`) // `
 
@@ -30,6 +33,7 @@ const (
 	CodeMethodNotAllowed      uint32 = 2213895429
 	CodeInvalidRequestFormat  uint32 = 3233457132
 	CodeInvalidRequestContent uint32 = 1447728996
+	CodeEmailIsBusy           uint32 = 683930722
 )
 
 // Error Variables
@@ -38,6 +42,7 @@ var (
 	MethodNotAllowed      error = New("method not allowed", CodeMethodNotAllowed)
 	InvalidRequestFormat  error = New("invalid request format", CodeInvalidRequestFormat)
 	InvalidRequestContent error = New("invalid request content", CodeInvalidRequestContent)
+	EmailIsBusy           error = New("email is busy", CodeEmailIsBusy)
 )
 
 // Hash map data by error codes
@@ -46,6 +51,7 @@ var HttpResponse = map[uint32]map[string]any{
 	2213895429: {"status": 405, "text": "Method not allowed"},
 	3233457132: {"status": 400, "text": "Invalid request format"},
 	1447728996: {"status": 422, "text": "Invalid request content"},
+	683930722:  {"status": 422, "text": "Email is busy"},
 }
 
 // GetHTTPErrData returning http status, error message and error code

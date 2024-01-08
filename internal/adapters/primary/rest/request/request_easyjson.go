@@ -42,6 +42,8 @@ func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest(in *jlexer.Lex
 			out.Email = string(in.String())
 		case "address":
 			out.Address = string(in.String())
+		case "password":
+			out.Password = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -70,6 +72,11 @@ func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest(out *jwriter.W
 		const prefix string = ",\"address\":"
 		out.RawString(prefix)
 		out.String(string(in.Address))
+	}
+	{
+		const prefix string = ",\"password\":"
+		out.RawString(prefix)
+		out.String(string(in.Password))
 	}
 	out.RawByte('}')
 }

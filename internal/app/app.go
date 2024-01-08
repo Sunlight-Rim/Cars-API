@@ -32,7 +32,7 @@ func Start() {
 	}()
 
 	go func() {
-		logrus.Fatalf("Prof: %v", profiler.Start())
+		logrus.Fatalf("Profiler: %v", profiler.Start())
 	}()
 
 	// Graceful shutdown

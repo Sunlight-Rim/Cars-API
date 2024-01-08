@@ -1,18 +1,18 @@
 package rest
 
 import (
-	authEntity "cars/internal/entities/auth"
-	carsEntity "cars/internal/entities/cars"
-	usersEntity "cars/internal/entities/users"
+	"cars/internal/domain/auth"
+	"cars/internal/domain/cars"
+	"cars/internal/domain/users"
 )
 
 type Service struct {
-	auth  authEntity.IUsecase
-	users usersEntity.IUsecase
-	cars  carsEntity.IUsecase
+	auth  auth.IUsecase
+	users users.IUsecase
+	cars  cars.IUsecase
 }
 
-func New(auth authEntity.IUsecase, users usersEntity.IUsecase, cars carsEntity.IUsecase) *Service {
+func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *Service {
 	return &Service{
 		auth:  auth,
 		users: users,
