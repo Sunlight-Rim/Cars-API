@@ -1,21 +1,25 @@
 package users
 
-// Get
+// Get me
 
-type GetReq struct {
+type GetMeReq struct {
 	Token string
 }
 
-type GetRes struct {
+type GetMeRes struct {
 	*User
 }
 
-type RepoGetReq struct {
+type RepoGetMeReq struct {
 	ID uint64
 }
 
-type RepoGetRes struct {
+type RepoGetMeRes struct {
 	*User
+}
+
+func NewGetMeRes(r *RepoGetMeRes) *GetMeRes {
+	return &GetMeRes{User: r.User}
 }
 
 // Update info

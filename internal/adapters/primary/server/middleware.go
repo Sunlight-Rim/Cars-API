@@ -19,6 +19,7 @@ func LoggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
 		LogRequestID: true,
 		LogUserAgent: true,
 		LogError:     true,
+		LogHeaders:   []string{"Authorization"},
 
 		LogValuesFunc: func(c echo.Context, values echomw.RequestLoggerValues) error {
 			errLocation, _ := errors.GetLocation(values.Error)
@@ -31,6 +32,7 @@ func LoggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
 				"remote_ip":      values.RemoteIP,
 				"request_id":     values.RequestID,
 				"user_agent":     values.UserAgent,
+				"headers":        values.Headers,
 				"error":          values.Error,
 				"error_location": errLocation,
 			})

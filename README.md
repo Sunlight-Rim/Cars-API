@@ -1,4 +1,4 @@
-# Сars API CRUD
+# Сars API
 
 Example Go application with Clean Architecture pattern. \
 Contains CRUD operations for Users and Cars services.

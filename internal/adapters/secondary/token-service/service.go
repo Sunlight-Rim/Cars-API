@@ -31,14 +31,11 @@ func New(redis *redis.Client, secret string, accessExp, refreshExp time.Duration
 }
 
 // Create new token.
-func (s *service) Create(id uint64) (string, error) {
-	token, err := jwt.NewWithClaims(
-		jwt.SigningMethodHS256,
-		jwt.MapClaims(auth.Claims{
-			"exp": time.Now().Add(s.accessExp).Unix(),
-			"id":  id,
-		}),
-	).SignedString(s.secret)
+func (s *service) Create(userID uint64) (string, error) {
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"exp":     time.Now().Add(s.accessExp).Unix(),
+		"user_id": userID,
+	}).SignedString(s.secret)
 	if err != nil {
 		return "", errors.Wrap(err, "signing token")
 	}
@@ -47,10 +44,10 @@ func (s *service) Create(id uint64) (string, error) {
 }
 
 // Parse token.
-func (s *service) Parse(token string) (auth.Claims, error) {
-	claims := jwt.MapClaims(auth.Claims{})
+func (s *service) Parse(token string) (*auth.Claims, error) {
+	jwtClaims := make(jwt.MapClaims)
 
-	if _, err := jwt.ParseWithClaims(token, claims, func(*jwt.Token) (any, error) {
+	if _, err := jwt.ParseWithClaims(token, jwtClaims, func(*jwt.Token) (any, error) {
 		return s.secret, nil
 	}); err != nil {
 		if errors.Is(err, jwt.ErrTokenExpired) {
@@ -59,27 +56,37 @@ func (s *service) Parse(token string) (auth.Claims, error) {
 		return nil, errors.Wrapf(errors.InvalidToken, "invalid token, %v", err)
 	}
 
+	claims, err := parse(jwtClaims)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse claims")
+	}
+
 	return claims, nil
 }
 
 // Parse expired token.
-func (s *service) ParseExpired(token string) (auth.Claims, error) {
-	claims := jwt.MapClaims(auth.Claims{})
+func (s *service) ParseExpired(token string) (*auth.Claims, error) {
+	jwtClaims := make(jwt.MapClaims)
 
-	if _, err := jwt.ParseWithClaims(token, claims, func(*jwt.Token) (any, error) {
+	if _, err := jwt.ParseWithClaims(token, jwtClaims, func(*jwt.Token) (any, error) {
 		return s.secret, nil
 	}); err != nil && !errors.Is(err, jwt.ErrTokenExpired) {
 		return nil, errors.Wrapf(errors.InvalidToken, "invalid token, %v", err)
+	}
+
+	claims, err := parse(jwtClaims)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse claims")
 	}
 
 	return claims, nil
 }
 
 // SaveRefresh saves refresh token with user ID to redis.
-func (s *service) SaveRefresh(token string, id uint64) error {
+func (s *service) SaveRefresh(token string, userID uint64) error {
 	if err := s.redis.Set(
 		context.TODO(),
-		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, id, token),
+		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
 		nil,
 		s.refreshExp,
 	).Err(); err != nil {
@@ -90,10 +97,10 @@ func (s *service) SaveRefresh(token string, id uint64) error {
 }
 
 // RemoveRefresh deletes refresh token with user ID from redis.
-func (s *service) RemoveRefresh(token string, id uint64) error {
+func (s *service) RemoveRefresh(token string, userID uint64) error {
 	if err := s.redis.GetDel(
 		context.TODO(),
-		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, id, token),
+		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
 	).Err(); err != nil {
 		if errors.Is(err, redis.Nil) {
 			return errors.Wrap(errors.InvalidToken, "token not in redis")
@@ -105,13 +112,37 @@ func (s *service) RemoveRefresh(token string, id uint64) error {
 }
 
 // RemoveAllRefresh deletes all refresh tokens of user ID from redis.
-func (s *service) RemoveAllRefresh(id uint64) error {
+func (s *service) RemoveAllRefresh(userID uint64) error {
+	var tokens []string
+
+	if err := s.redis.Keys(
+		context.TODO(),
+		fmt.Sprintf("%s_%d_*", refreshKeyPrefix, userID),
+	).ScanSlice(&tokens); err != nil {
+		return errors.Wrap(err, "get all refresh tokens")
+	}
+
 	if err := s.redis.Del(
 		context.TODO(),
-		fmt.Sprintf("%s_%d_*", refreshKeyPrefix, id),
+		tokens...,
 	).Err(); err != nil {
-		return errors.Wrap(err, "pop refresh token")
+		return errors.Wrap(err, "remove all refresh tokens")
 	}
 
 	return nil
+}
+
+// Parse token claims to struct.
+func parse(jwtClaims jwt.MapClaims) (*auth.Claims, error) {
+	var claims auth.Claims
+
+	// Numeric values is float64 for "encoding/json"
+	userID, ok := jwtClaims["user_id"].(float64)
+	if !ok {
+		return nil, errors.Wrap(errors.InvalidToken, "user_id")
+	}
+
+	claims.UserID = uint64(userID)
+
+	return &claims, nil
 }

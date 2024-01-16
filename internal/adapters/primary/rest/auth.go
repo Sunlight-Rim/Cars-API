@@ -9,7 +9,7 @@ import (
 )
 
 // Signup registers a new user.
-func (h *Handlers) Signup(ctx echo.Context) (err error) {
+func (h *Handlers) Signup(c echo.Context) (err error) {
 	var (
 		req *request.Signup
 		res *response.Signup
@@ -17,13 +17,13 @@ func (h *Handlers) Signup(ctx echo.Context) (err error) {
 
 	// Send response
 	defer func() {
-		if errResp := ctx.JSONBlob(response.Map(res, err)); errResp != nil {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
 			err = errors.Wrapf(errResp, "response, %v", err)
 		}
 	}()
 
 	// Parse request
-	if req, err = request.NewSignup(ctx); err != nil {
+	if req, err = request.NewSignup(c); err != nil {
 		return errors.Wrap(err, "request")
 	}
 
@@ -38,7 +38,7 @@ func (h *Handlers) Signup(ctx echo.Context) (err error) {
 }
 
 // Signin provides login user to his account.
-func (h *Handlers) Signin(ctx echo.Context) (err error) {
+func (h *Handlers) Signin(c echo.Context) (err error) {
 	var (
 		req *request.Signin
 		res *response.Signin
@@ -46,13 +46,13 @@ func (h *Handlers) Signin(ctx echo.Context) (err error) {
 
 	// Send response
 	defer func() {
-		if errResp := ctx.JSONBlob(response.Map(res, err)); errResp != nil {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
 			err = errors.Wrapf(errResp, "response, %v", err)
 		}
 	}()
 
 	// Parse request
-	if req, err = request.NewSignin(ctx); err != nil {
+	if req, err = request.NewSignin(c); err != nil {
 		return errors.Wrap(err, "request")
 	}
 

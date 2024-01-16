@@ -23,6 +23,8 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *Handlers
 }
 
 func (h Handlers) Register(api *echo.Group) {
+	// Auth
+
 	apiAuth := api.Group("/auth")
 	/*
 		swagger:route POST /api/auth/signup Auth SignupRequest
@@ -30,7 +32,7 @@ func (h Handlers) Register(api *echo.Group) {
 		Register a new user account.
 		Password must contain at least one special character in a range [.,\(\);:\\\/\[\]\{\}@$!%*#?&=].
 
-			schemes: https
+			schemes: http
 			responses:
 				200: SignupResponse
 				default: ErrorResponse
@@ -41,7 +43,7 @@ func (h Handlers) Register(api *echo.Group) {
 
 		Sign in to account.
 
-			schemes: https
+			schemes: http
 			responses:
 				200: SigninResponse
 				default: ErrorResponse
@@ -51,11 +53,27 @@ func (h Handlers) Register(api *echo.Group) {
 	// apiAuth.POST("/signout", s.rest.Signout)
 	// apiAuth.POST("/signout-all", s.rest.SignoutAll)
 
-	// apiUser := api.Group("/user")
-	// apiUser.GET("", s.rest.GetUser)
+	// User
+
+	apiUser := api.Group("/user")
+	/*
+		swagger:route GET /api/user User null
+
+		Sign in to account.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: GetMeResponse
+				default: ErrorResponse
+	*/
+	apiUser.GET("", h.GetMe)
 	// apiUser.PUT("/info", s.rest.UpdateUserInfo)
 	// apiUser.PUT("/password", s.rest.UpdatePassword)
 	// apiUser.DELETE("", s.rest.DeleteUser)
+
+	// Cars
 
 	// apiCars := api.Group("/cars")
 	// apiCars.POST("", s.rest.CreateCar)

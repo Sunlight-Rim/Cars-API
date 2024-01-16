@@ -246,7 +246,94 @@ func (v *Response) UnmarshalJSON(data []byte) error {
 func (v *Response) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse2(l, v)
 }
-func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(in *jlexer.Lexer, out *ErrorResponse) {
+func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(in *jlexer.Lexer, out *GetMe) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "id":
+			out.ID = uint64(in.Uint64())
+		case "username":
+			out.Username = string(in.String())
+		case "email":
+			out.Email = string(in.String())
+		case "address":
+			out.Address = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(out *jwriter.Writer, in GetMe) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"id\":"
+		out.RawString(prefix[1:])
+		out.Uint64(uint64(in.ID))
+	}
+	{
+		const prefix string = ",\"username\":"
+		out.RawString(prefix)
+		out.String(string(in.Username))
+	}
+	{
+		const prefix string = ",\"email\":"
+		out.RawString(prefix)
+		out.String(string(in.Email))
+	}
+	{
+		const prefix string = ",\"address\":"
+		out.RawString(prefix)
+		out.String(string(in.Address))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v GetMe) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v GetMe) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *GetMe) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *GetMe) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(l, v)
+}
+func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse4(in *jlexer.Lexer, out *ErrorResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -279,7 +366,7 @@ func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(in *jlexer.L
 		in.Consumed()
 	}
 }
-func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(out *jwriter.Writer, in ErrorResponse) {
+func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse4(out *jwriter.Writer, in ErrorResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -299,23 +386,23 @@ func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(out *jwriter
 // MarshalJSON supports json.Marshaler interface
 func (v ErrorResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(&w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse4(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ErrorResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse3(w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse4(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ErrorResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(&r, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse4(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ErrorResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse3(l, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse4(l, v)
 }

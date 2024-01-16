@@ -21,5 +21,5 @@ type IRepository interface {
 }
 
 type IToken interface {
-	Parse(token string) (claims auth.Claims, err error)
+	Parse(token string) (claims *auth.Claims, err error)
 }

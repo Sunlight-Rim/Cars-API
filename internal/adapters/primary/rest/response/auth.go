@@ -1,6 +1,8 @@
 package response
 
-import "cars/internal/domain/auth"
+import (
+	"cars/internal/domain/auth"
+)
 
 // General response struct.
 type Response struct {
@@ -33,3 +35,9 @@ type Signin struct {
 func NewSignin(r *auth.SigninRes) *Signin {
 	return &Signin{Token: r.Token}
 }
+
+// Refresh
+
+// Signout
+
+// Singout all

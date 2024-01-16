@@ -18,10 +18,10 @@ type IRepository interface {
 }
 
 type IToken interface {
-	Create(id uint64) (token string, err error)
-	Parse(token string) (claims Claims, err error)
-	ParseExpired(token string) (claims Claims, err error)
-	SaveRefresh(token string, id uint64) error
-	RemoveRefresh(token string, id uint64) error
-	RemoveAllRefresh(id uint64) error
+	Create(userID uint64) (token string, err error)
+	Parse(token string) (claims *Claims, err error)
+	ParseExpired(token string) (claims *Claims, err error)
+	SaveRefresh(token string, userID uint64) error
+	RemoveRefresh(token string, userID uint64) error
+	RemoveAllRefresh(userID uint64) error
 }

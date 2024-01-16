@@ -45,3 +45,14 @@ type SigninResponse struct {
 		Error any `json:"error"`
 	} `json:"body"`
 }
+
+// User account data.
+// swagger:response GetMeResponse
+type GetMeResponse struct {
+	// in: body
+	Body struct {
+		Response response.GetMe `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}

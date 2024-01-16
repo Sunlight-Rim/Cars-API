@@ -31,6 +31,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+var healthStatus = []byte("Alive!")
+
 // Register services handlers
 func (s *server) Register() {
 	// REST handlers
@@ -44,7 +46,7 @@ func (s *server) Register() {
 	// General handlers
 
 	/*
-		swagger:route GET /errors Errors none
+		swagger:route GET /errors Errors null
 
 		List of API errors.
 
@@ -53,11 +55,11 @@ func (s *server) Register() {
 				200: ErrorsListResponse
 				default: ErrorResponse
 	*/
-	s.echo.GET("/errors", func(ctx echo.Context) error {
-		return ctx.JSONBlob(http.StatusOK, errors.ResponseList)
+	s.echo.GET("/errors", func(c echo.Context) error {
+		return c.JSONBlob(http.StatusOK, errors.ResponseList)
 	})
 	/*
-		swagger:route GET /health Health none
+		swagger:route GET /health Health null
 
 		Health check.
 
@@ -66,7 +68,7 @@ func (s *server) Register() {
 				200: body:string
 				default: ErrorResponse
 	*/
-	s.echo.GET("/health", func(ctx echo.Context) error {
-		return ctx.JSONBlob(http.StatusOK, []byte("Alive!"))
+	s.echo.GET("/health", func(c echo.Context) error {
+		return c.JSONBlob(http.StatusOK, healthStatus)
 	})
 }

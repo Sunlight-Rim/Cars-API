@@ -2,7 +2,6 @@ package authRepository
 
 import (
 	"database/sql"
-	"fmt"
 
 	"cars/internal/domain/auth"
 	"cars/pkg/errors"
@@ -72,7 +71,6 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (res *auth.RepoSignupRes, e
 		req.Address,
 		req.PasswordHash,
 	).Scan(&res.ID); err != nil {
-		fmt.Println("myerris", err)
 		return nil, errors.Wrap(err, "adding user")
 	}
 

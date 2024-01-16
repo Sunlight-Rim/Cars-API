@@ -4,8 +4,8 @@ run:
 
 # Generate easyjson marshallers
 json:
-	@easyjson -all internal/adapters/primary/rest/response/response.go
-	@easyjson -all internal/adapters/primary/rest/request/request.go
+	@easyjson -all internal/adapters/primary/rest/response
+	@easyjson -all internal/adapters/primary/rest/request
 
 # Generate swagger docs
 documentation:

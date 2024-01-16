@@ -1,3 +1,5 @@
 package auth
 
-type Claims = map[string]any
+type Claims struct {
+	UserID uint64
+}
