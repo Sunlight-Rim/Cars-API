@@ -13,8 +13,14 @@ var ResponseList []byte = []byte(`{
     "1447728996": {
         "en": "Invalid request content"
     },
+    "1760844835": {
+        "en": "Expired token"
+    },
     "2213895429": {
         "en": "Method not allowed"
+    },
+    "2352452421": {
+        "en": "Invalid token"
     },
     "3232214746": {
         "en": "Not found"
@@ -24,6 +30,9 @@ var ResponseList []byte = []byte(`{
     },
     "683930722": {
         "en": "Email is busy"
+    },
+    "816852758": {
+        "en": "Invalid credentials"
     }
 }`) // `
 
@@ -34,6 +43,9 @@ const (
 	CodeInvalidRequestFormat  uint32 = 3233457132
 	CodeInvalidRequestContent uint32 = 1447728996
 	CodeEmailIsBusy           uint32 = 683930722
+	CodeInvalidCredentials    uint32 = 816852758
+	CodeInvalidToken          uint32 = 2352452421
+	CodeExpiredToken          uint32 = 1760844835
 )
 
 // Error Variables
@@ -43,6 +55,9 @@ var (
 	InvalidRequestFormat  error = New("invalid request format", CodeInvalidRequestFormat)
 	InvalidRequestContent error = New("invalid request content", CodeInvalidRequestContent)
 	EmailIsBusy           error = New("email is busy", CodeEmailIsBusy)
+	InvalidCredentials    error = New("invalid credentials", CodeInvalidCredentials)
+	InvalidToken          error = New("invalid token", CodeInvalidToken)
+	ExpiredToken          error = New("expired token", CodeExpiredToken)
 )
 
 // Hash map data by error codes
@@ -52,6 +67,9 @@ var HttpResponse = map[uint32]map[string]any{
 	3233457132: {"status": 400, "text": "Invalid request format"},
 	1447728996: {"status": 422, "text": "Invalid request content"},
 	683930722:  {"status": 422, "text": "Email is busy"},
+	816852758:  {"status": 401, "text": "Invalid credentials"},
+	2352452421: {"status": 401, "text": "Invalid token"},
+	1760844835: {"status": 401, "text": "Expired token"},
 }
 
 // GetHTTPErrData returning http status, error message and error code

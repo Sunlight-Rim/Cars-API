@@ -1,8 +1,9 @@
 package carsRepository
 
 import (
-	"cars/internal/domain/cars"
 	"database/sql"
+
+	"cars/internal/domain/cars"
 )
 
 type repository struct {

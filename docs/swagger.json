@@ -10,12 +10,52 @@
   ],
   "swagger": "2.0",
   "info": {
-    "description": "API with CRUD-operations on Users and his Cars.",
+    "description": "API with CRUD operations on Users and their Cars.",
     "title": "Cars API",
     "version": "0.1"
   },
   "host": "localhost:1337",
   "paths": {
+    "/api/auth/signin": {
+      "post": {
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Sign in to account.",
+        "operationId": "SigninRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "x-go-name": "Email"
+                },
+                "password": {
+                  "type": "string",
+                  "x-go-name": "Password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SigninResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
     "/api/auth/signup": {
       "post": {
         "description": "Password must contain at least one special character in a range [.,\\(\\);:\\\\\\/\\[\\]\\{\\}@$!%*#?\u0026=].",
@@ -110,12 +150,39 @@
     }
   },
   "definitions": {
+    "ErrorResponse": {
+      "type": "object",
+      "title": "General error response struct.",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "uint32",
+          "x-go-name": "Code"
+        },
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "Signin": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "x-go-name": "Token"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "Signup": {
       "type": "object",
       "properties": {
-        "ID": {
+        "id": {
           "type": "integer",
-          "format": "uint64"
+          "format": "uint64",
+          "x-go-name": "ID"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -123,24 +190,12 @@
   },
   "responses": {
     "ErrorResponse": {
-      "description": "General errors model. Response is null.",
+      "description": "General errors model. Response field is null.",
       "schema": {
         "type": "object",
         "properties": {
           "error": {
-            "type": "object",
-            "properties": {
-              "code": {
-                "type": "integer",
-                "format": "int64",
-                "x-go-name": "Code"
-              },
-              "message": {
-                "type": "string",
-                "x-go-name": "Message"
-              }
-            },
-            "x-go-name": "Error"
+            "$ref": "#/definitions/ErrorResponse"
           },
           "response": {
             "x-go-name": "Response",
@@ -163,6 +218,21 @@
               }
             },
             "x-go-name": "Response"
+          }
+        }
+      }
+    },
+    "SigninResponse": {
+      "description": "Successfully signed in. Returns token.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/Signin"
           }
         }
       }

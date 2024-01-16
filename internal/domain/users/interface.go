@@ -1,5 +1,7 @@
 package users
 
+import "cars/internal/domain/auth"
+
 // Usecase
 
 type IUsecase interface {
@@ -16,4 +18,8 @@ type IRepository interface {
 	UpdateInfo(*RepoUpdateInfoReq) (*RepoUpdateInfoRes, error)
 	UpdatePassword(*RepoUpdatePasswordReq) error
 	Delete(*RepoDeleteReq) (*RepoDeleteRes, error)
+}
+
+type IToken interface {
+	Parse(token string) (claims auth.Claims, err error)
 }

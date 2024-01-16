@@ -104,3 +104,76 @@ func (v *Signup) UnmarshalJSON(data []byte) error {
 func (v *Signup) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest(l, v)
 }
+func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest1(in *jlexer.Lexer, out *Signin) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "email":
+			out.Email = string(in.String())
+		case "password":
+			out.Password = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest1(out *jwriter.Writer, in Signin) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"email\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Email))
+	}
+	{
+		const prefix string = ",\"password\":"
+		out.RawString(prefix)
+		out.String(string(in.Password))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v Signin) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest1(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v Signin) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest1(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *Signin) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest1(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *Signin) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest1(l, v)
+}

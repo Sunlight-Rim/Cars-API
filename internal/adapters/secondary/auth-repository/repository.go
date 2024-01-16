@@ -1,9 +1,11 @@
 package authRepository
 
 import (
+	"database/sql"
+	"fmt"
+
 	"cars/internal/domain/auth"
 	"cars/pkg/errors"
-	"database/sql"
 )
 
 type repository struct {
@@ -16,7 +18,9 @@ func New(postgres *sql.DB) *repository {
 	}
 }
 
-func (r *repository) Signup(req *auth.RepoSignupReq) (*auth.RepoSignupRes, error) {
+func (r *repository) Signup(req *auth.RepoSignupReq) (res *auth.RepoSignupRes, err error) {
+	res = new(auth.RepoSignupRes)
+
 	// Start transacton
 	tx, err := r.psql.Begin()
 	if err != nil {
@@ -44,7 +48,7 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (*auth.RepoSignupRes, error
 		FROM api.users
 		WHERE email = $1
 	`, req.Email,
-	).Scan(&emailBusy); err != nil && err != sql.ErrNoRows {
+	).Scan(&emailBusy); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return nil, errors.Wrap(err, "checking email")
 	}
 
@@ -53,8 +57,6 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (*auth.RepoSignupRes, error
 	}
 
 	// Add user
-	var id uint64
-
 	if err := tx.QueryRow(`
 		INSERT INTO api.users(
 			username,
@@ -69,13 +71,33 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (*auth.RepoSignupRes, error
 		req.Email,
 		req.Address,
 		req.PasswordHash,
-	).Scan(&id); err != nil {
+	).Scan(&res.ID); err != nil {
+		fmt.Println("myerris", err)
 		return nil, errors.Wrap(err, "adding user")
 	}
 
-	return &auth.RepoSignupRes{ID: id}, nil
+	return res, nil
 }
 
-func (r *repository) Signin(*auth.RepoSigninReq) (*auth.RepoSigninRes, error) {
-	return nil, nil
+func (r *repository) Signin(req *auth.RepoSigninReq) (*auth.RepoSigninRes, error) {
+	var res auth.RepoSigninRes
+
+	if err := r.psql.QueryRow(`
+		SELECT id
+		FROM api.users
+		WHERE
+			email = $1 AND
+			password_hash = $2
+	`,
+		req.Email,
+		req.PasswordHash,
+	).Scan(&res.ID); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, errors.Wrap(errors.InvalidCredentials, "invalid credentials")
+		}
+
+		return nil, errors.Wrap(err, "checking email")
+	}
+
+	return &res, nil
 }

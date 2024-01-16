@@ -1,12 +1,14 @@
 package cars
 
 type Usecase struct {
-	repo IRepository
+	repo  IRepository
+	token IToken
 }
 
-func New(repo IRepository) *Usecase {
+func New(repo IRepository, token IToken) *Usecase {
 	return &Usecase{
-		repo: repo,
+		repo:  repo,
+		token: token,
 	}
 }
 

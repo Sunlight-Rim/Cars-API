@@ -11,3 +11,13 @@ type SignupRequest struct {
 		Password string `json:"password"`
 	}
 }
+
+// swagger:parameters SigninRequest
+type SigninRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+}

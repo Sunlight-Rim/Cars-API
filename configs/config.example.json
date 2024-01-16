@@ -18,7 +18,8 @@
 
     "token": {
         "secret": "victoria",
-        "exp_minutes": 60
+        "access_exp_minutes": 60,
+        "refresh_exp_minutes": 43200
     },
 
     "database": {
@@ -39,12 +40,7 @@
             "host": "redis",
             "port": 6379,
             "password": "",
-            "database": 0,
-
-            "session": {
-                "key_prefix": "session",
-                "exp_minutes": 43200
-            }
+            "database": 0
         }
     }
 }

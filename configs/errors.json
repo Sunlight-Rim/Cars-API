@@ -20,5 +20,19 @@
     {
         "error": "email is busy",
         "http_status": 422
+    },
+
+    {
+        "error": "invalid credentials",
+        "http_status": 401
+    },
+
+    {
+        "error": "invalid token",
+        "http_status": 401
+    },
+    {
+        "error": "expired token",
+        "http_status": 401
     }
 ]

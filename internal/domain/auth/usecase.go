@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"cars/pkg/errors"
 	"crypto/sha256"
+
+	"cars/pkg/errors"
 )
 
 type Usecase struct {
@@ -26,7 +27,7 @@ func (uc *Usecase) Signup(req *SignupReq) (*SignupRes, error) {
 	}
 
 	// Add user to database
-	res, err := uc.repo.Signup(&RepoSignupReq{
+	resRepo, err := uc.repo.Signup(&RepoSignupReq{
 		Username:     req.Username,
 		Email:        req.Email,
 		Address:      req.Address,
@@ -36,15 +37,48 @@ func (uc *Usecase) Signup(req *SignupReq) (*SignupRes, error) {
 		return nil, errors.Wrap(err, "repository")
 	}
 
-	return &SignupRes{ID: res.ID}, nil
+	return NewSignupRes(resRepo), nil
 }
 
-func (uc *Usecase) Signin(*SigninReq) (*SigninRes, error) {
+// Signin checks credentials, generates token and saves them to cache.
+func (uc *Usecase) Signin(req *SigninReq) (*SigninRes, error) {
+	// Hash password
+	ph := sha256.New()
+	if _, err := ph.Write([]byte(req.Password)); err != nil {
+		return nil, errors.Wrap(err, "hash password")
+	}
+
+	// Check credentials
+	resRepo, err := uc.repo.Signin(&RepoSigninReq{
+		Email:        req.Email,
+		PasswordHash: string(ph.Sum(nil)),
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "repository")
+	}
+
+	// Create token
+	token, err := uc.token.Create(resRepo.ID)
+	if err != nil {
+		return nil, errors.Wrap(err, "create token")
+	}
+
+	// Save token
+	if err := uc.token.SaveRefresh(token, resRepo.ID); err != nil {
+		return nil, errors.Wrap(err, "save token")
+	}
+
+	return NewSigninRes(token), nil
+}
+
+func (uc *Usecase) Refresh(*RefreshReq) (*RefreshRes, error) {
 	return nil, nil
 }
+
 func (uc *Usecase) Signout(*SignoutReq) (*SignoutRes, error) {
 	return nil, nil
 }
-func (uc *Usecase) Refresh(*RefreshReq) (*RefreshRes, error) {
+
+func (uc *Usecase) SignoutAll(*SignoutAllReq) (*SignoutAllRes, error) {
 	return nil, nil
 }

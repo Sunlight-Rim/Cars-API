@@ -104,7 +104,12 @@ func connectRedis() *goRedis.Client {
 func newAuth(postrges *sql.DB, redis *goRedis.Client) *auth.Usecase {
 	return auth.New(
 		authRepository.New(postrges),
-		tokenService.New(redis),
+		tokenService.New(
+			redis,
+			viper.GetString("token.secret"),
+			viper.GetDuration("token.access_exp_minutes"),
+			viper.GetDuration("token.refresh_exp_minutes"),
+		),
 	)
 }
 
@@ -112,6 +117,7 @@ func newAuth(postrges *sql.DB, redis *goRedis.Client) *auth.Usecase {
 func newUsers(postrges *sql.DB) *users.Usecase {
 	return users.New(
 		usersRepository.New(postrges),
+		tokenService.NewParser(viper.GetString("token.secret")),
 	)
 }
 
@@ -119,5 +125,6 @@ func newUsers(postrges *sql.DB) *users.Usecase {
 func newCars(postrges *sql.DB) *cars.Usecase {
 	return cars.New(
 		carsRepository.New(postrges),
+		tokenService.NewParser(viper.GetString("token.secret")),
 	)
 }

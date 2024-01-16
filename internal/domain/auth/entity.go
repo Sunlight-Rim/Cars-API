@@ -1,5 +1,3 @@
 package auth
 
-type Token struct {
-	ID uint64
-}
+type Claims = map[string]any

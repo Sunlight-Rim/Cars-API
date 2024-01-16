@@ -5,8 +5,9 @@ package auth
 type IUsecase interface {
 	Signup(*SignupReq) (*SignupRes, error)
 	Signin(*SigninReq) (*SigninRes, error)
-	Signout(*SignoutReq) (*SignoutRes, error)
 	Refresh(*RefreshReq) (*RefreshRes, error)
+	Signout(*SignoutReq) (*SignoutRes, error)
+	SignoutAll(*SignoutAllReq) (*SignoutAllRes, error)
 }
 
 // Adapters
@@ -17,9 +18,10 @@ type IRepository interface {
 }
 
 type IToken interface {
-	Create(claims map[string]string) (token string, err error)
-	Parse(token string) (claims map[string]string, err error)
-	ParseExpired(token string) (claims map[string]string, err error)
-	Save(token string) error
-	Delete(token string) error
+	Create(id uint64) (token string, err error)
+	Parse(token string) (claims Claims, err error)
+	ParseExpired(token string) (claims Claims, err error)
+	SaveRefresh(token string, id uint64) error
+	RemoveRefresh(token string, id uint64) error
+	RemoveAllRefresh(id uint64) error
 }

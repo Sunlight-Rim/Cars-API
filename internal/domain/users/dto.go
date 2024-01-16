@@ -3,7 +3,7 @@ package users
 // Get
 
 type GetReq struct {
-	ID uint64
+	Token string
 }
 
 type GetRes struct {
@@ -21,7 +21,7 @@ type RepoGetRes struct {
 // Update info
 
 type UpdateInfoReq struct {
-	ID       uint64
+	Token    string
 	Username string
 	Address  string
 }
@@ -43,19 +43,19 @@ type RepoUpdateInfoRes struct {
 // Update password
 
 type UpdatePasswordReq struct {
-	ID          uint64
+	Token       string
 	NewPassword string
 }
 
 type RepoUpdatePasswordReq struct {
-	ID          uint64
-	NewPassword string
+	ID              uint64
+	NewPasswordHash string
 }
 
 // Delete
 
 type DeleteReq struct {
-	ID uint64
+	Token string
 }
 
 type DeleteRes struct {

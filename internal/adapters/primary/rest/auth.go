@@ -8,7 +8,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (s *Service) Signup(ctx echo.Context) (err error) {
+// Signup registers a new user.
+func (h *Handlers) Signup(ctx echo.Context) (err error) {
 	var (
 		req *request.Signup
 		res *response.Signup
@@ -27,11 +28,40 @@ func (s *Service) Signup(ctx echo.Context) (err error) {
 	}
 
 	// Call usecase
-	resEntity, err := s.auth.Signup(req.ToEntity())
+	resUcase, err := h.auth.Signup(req.ToEntity())
 	if err != nil {
 		return errors.Wrap(err, "signup")
 	}
 
-	res = response.NewSignup(resEntity)
+	res = response.NewSignup(resUcase)
+	return nil
+}
+
+// Signin provides login user to his account.
+func (h *Handlers) Signin(ctx echo.Context) (err error) {
+	var (
+		req *request.Signin
+		res *response.Signin
+	)
+
+	// Send response
+	defer func() {
+		if errResp := ctx.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewSignin(ctx); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call usecase
+	resUcase, err := h.auth.Signin(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "signin")
+	}
+
+	res = response.NewSignin(resUcase)
 	return nil
 }

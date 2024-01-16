@@ -14,10 +14,10 @@ type CreateRes struct {
 }
 
 type RepoCreateReq struct {
-	Token string
-	Plate string
-	Model string
-	Color string
+	UserID uint64
+	Plate  string
+	Model  string
+	Color  string
 }
 
 type RepoCreateRes struct {
@@ -35,7 +35,7 @@ type GetRes struct {
 }
 
 type RepoGetReq struct {
-	Token string
+	UserID uint64
 }
 
 type RepoGetRes struct {
@@ -55,7 +55,7 @@ type UpdateColorRes struct {
 }
 
 type RepoUpdateColorReq struct {
-	Token    string
+	UserID   uint64
 	CarID    uint64
 	NewColor string
 }
@@ -76,8 +76,8 @@ type DeleteRes struct {
 }
 
 type RepoDeleteReq struct {
-	Token string
-	CarID uint64
+	UserID uint64
+	CarID  uint64
 }
 
 type RepoDeleteRes struct {

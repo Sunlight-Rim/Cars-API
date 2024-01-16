@@ -4,8 +4,8 @@ import "cars/internal/domain/auth"
 
 // General response struct.
 type Response struct {
-	Response any           `json:"response"`
-	Error    ErrorResponse `json:"error"`
+	Response any `json:"response"`
+	Error    any `json:"error"`
 }
 
 // General error response struct.
@@ -17,9 +17,19 @@ type ErrorResponse struct {
 // Signup
 
 type Signup struct {
-	ID uint64
+	ID uint64 `json:"id"`
 }
 
 func NewSignup(r *auth.SignupRes) *Signup {
 	return &Signup{ID: r.ID}
+}
+
+// Signin
+
+type Signin struct {
+	Token string `json:"token"`
+}
+
+func NewSignin(r *auth.SigninRes) *Signin {
+	return &Signin{Token: r.Token}
 }

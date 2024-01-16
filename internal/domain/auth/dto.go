@@ -24,6 +24,10 @@ type RepoSignupRes struct {
 	ID uint64
 }
 
+func NewSignupRes(r *RepoSignupRes) *SignupRes {
+	return &SignupRes{ID: r.ID}
+}
+
 // Signin
 
 type SigninReq struct {
@@ -36,12 +40,26 @@ type SigninRes struct {
 }
 
 type RepoSigninReq struct {
-	Email    string
-	Password string
+	Email        string
+	PasswordHash string
 }
 
 type RepoSigninRes struct {
 	ID uint64
+}
+
+func NewSigninRes(token string) *SigninRes {
+	return &SigninRes{Token: token}
+}
+
+// Refresh
+
+type RefreshReq struct {
+	Token string
+}
+
+type RefreshRes struct {
+	Token string
 }
 
 // Signout
@@ -54,12 +72,12 @@ type SignoutRes struct {
 	Token string
 }
 
-// Refresh
+// Signout all
 
-type RefreshReq struct {
+type SignoutAllReq struct {
 	Token string
 }
 
-type RefreshRes struct {
-	Token string
+type SignoutAllRes struct {
+	Token []string
 }

@@ -26,6 +26,9 @@ func Start() {
 		newCars(postgres),
 	)
 
+	// Register service handlers
+	s.Register()
+
 	// Start server
 	go func() {
 		logrus.Fatalf("Server: %v", s.Start())

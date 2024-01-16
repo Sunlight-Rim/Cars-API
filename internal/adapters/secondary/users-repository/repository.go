@@ -1,8 +1,9 @@
 package usersRepository
 
 import (
-	"cars/internal/domain/users"
 	"database/sql"
+
+	"cars/internal/domain/users"
 )
 
 type repository struct {

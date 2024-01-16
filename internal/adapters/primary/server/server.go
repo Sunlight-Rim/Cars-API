@@ -21,8 +21,8 @@ import (
 type server struct {
 	echo *echo.Echo
 
-	rest    *rest.Service
-	graphql *graphql.Service
+	rest    *rest.Handlers
+	graphql *graphql.Handlers
 }
 
 func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
@@ -33,8 +33,7 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
 		graphql: graphql.New(auth, users, cars),
 	}
 
-	s.echo.Use(echomw.CORS(), echomw.Recover(), echomw.RequestID(), LoggerMW())
-	s.setRoutes()
+	s.echo.Use(echomw.Recover(), echomw.CORS(), echomw.RequestID(), LoggerMW())
 
 	// Custom Echo error handler
 	s.echo.HTTPErrorHandler = func(err error, c echo.Context) {
