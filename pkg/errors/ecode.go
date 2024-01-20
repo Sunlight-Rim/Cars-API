@@ -28,6 +28,9 @@ var ResponseList []byte = []byte(`{
     "3233457132": {
         "en": "Invalid request format"
     },
+    "3482864722": {
+        "en": "Missing token"
+    },
     "4129226438": {
         "en": "Plate is busy"
     },
@@ -48,6 +51,7 @@ const (
 	CodeEmailIsBusy           uint32 = 683930722
 	CodePlateIsBusy           uint32 = 4129226438
 	CodeInvalidCredentials    uint32 = 816852758
+	CodeMissingToken          uint32 = 3482864722
 	CodeInvalidToken          uint32 = 2352452421
 	CodeExpiredToken          uint32 = 1760844835
 )
@@ -61,6 +65,7 @@ var (
 	EmailIsBusy           error = New("email is busy", CodeEmailIsBusy)
 	PlateIsBusy           error = New("plate is busy", CodePlateIsBusy)
 	InvalidCredentials    error = New("invalid credentials", CodeInvalidCredentials)
+	MissingToken          error = New("missing token", CodeMissingToken)
 	InvalidToken          error = New("invalid token", CodeInvalidToken)
 	ExpiredToken          error = New("expired token", CodeExpiredToken)
 )
@@ -74,6 +79,7 @@ var HttpResponse = map[uint32]map[string]any{
 	683930722:  {"status": 422, "text": "Email is busy"},
 	4129226438: {"status": 422, "text": "Plate is busy"},
 	816852758:  {"status": 401, "text": "Invalid credentials"},
+	3482864722: {"status": 401, "text": "Missing token"},
 	2352452421: {"status": 401, "text": "Invalid token"},
 	1760844835: {"status": 401, "text": "Expired token"},
 }

@@ -12,13 +12,17 @@ type Handlers struct {
 	auth  auth.IUsecase
 	users users.IUsecase
 	cars  cars.IUsecase
+
+	checkTokenMW echo.MiddlewareFunc
 }
 
-func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *Handlers {
+func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase, checkTokenMW echo.MiddlewareFunc) *Handlers {
 	return &Handlers{
 		auth:  auth,
 		users: users,
 		cars:  cars,
+
+		checkTokenMW: checkTokenMW,
 	}
 }
 
@@ -26,6 +30,7 @@ func (h *Handlers) Register(api *echo.Group) {
 	// Auth
 
 	apiAuth := api.Group("/auth")
+
 	/*
 		swagger:route POST /api/auth/signup Auth SignupRequest
 
@@ -85,7 +90,8 @@ func (h *Handlers) Register(api *echo.Group) {
 
 	// User
 
-	apiUser := api.Group("/user")
+	apiUser := api.Group("/user", h.checkTokenMW)
+
 	/*
 		swagger:route GET /api/user User null
 
@@ -99,13 +105,14 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiUser.GET("", h.GetMe)
-	// apiUser.PUT("/info", h.UpdateUserInfo)
+	// apiUser.PUT("", h.UpdateUserInfo)
 	// apiUser.PUT("/password", h.UpdatePassword)
 	// apiUser.DELETE("", h.DeleteUser)
 
 	// Cars
 
-	apiCars := api.Group("/cars")
+	apiCars := api.Group("/cars", h.checkTokenMW)
+
 	/*
 		swagger:route POST /api/cars Cars CreateCarRequest
 
@@ -120,7 +127,19 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiCars.POST("", h.CreateCar)
-	// apiCars.GET("", h.GetCars)
+	/*
+		swagger:route GET /api/cars Cars null
+
+		Get all user cars.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: GetCarsResponse
+				default: ErrorResponse
+	*/
+	apiCars.GET("", h.GetCars)
 	// apiCars.PUT("/color", h.UpdateCarColor)
 	// apiCars.DELETE("", h.DeleteCar)
 }

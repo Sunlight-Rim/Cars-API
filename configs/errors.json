@@ -32,6 +32,10 @@
     },
 
     {
+        "error": "missing token",
+        "http_status": 401
+    },
+    {
         "error": "invalid token",
         "http_status": 401
     },

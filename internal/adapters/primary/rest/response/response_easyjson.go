@@ -3,6 +3,7 @@
 package response
 
 import (
+	cars "cars/internal/domain/cars"
 	json "encoding/json"
 	easyjson "github.com/mailru/easyjson"
 	jlexer "github.com/mailru/easyjson/jlexer"
@@ -563,7 +564,180 @@ func (v *GetMe) UnmarshalJSON(data []byte) error {
 func (v *GetMe) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse6(l, v)
 }
-func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(in *jlexer.Lexer, out *ErrorResponse) {
+func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(in *jlexer.Lexer, out *GetCars) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "cars":
+			if in.IsNull() {
+				in.Skip()
+				out.Cars = nil
+			} else {
+				in.Delim('[')
+				if out.Cars == nil {
+					if !in.IsDelim(']') {
+						out.Cars = make([]*cars.Car, 0, 8)
+					} else {
+						out.Cars = []*cars.Car{}
+					}
+				} else {
+					out.Cars = (out.Cars)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v4 *cars.Car
+					if in.IsNull() {
+						in.Skip()
+						v4 = nil
+					} else {
+						if v4 == nil {
+							v4 = new(cars.Car)
+						}
+						easyjson6ff3ac1dDecodeCarsInternalDomainCars(in, v4)
+					}
+					out.Cars = append(out.Cars, v4)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(out *jwriter.Writer, in GetCars) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"cars\":"
+		out.RawString(prefix[1:])
+		if in.Cars == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v5, v6 := range in.Cars {
+				if v5 > 0 {
+					out.RawByte(',')
+				}
+				if v6 == nil {
+					out.RawString("null")
+				} else {
+					easyjson6ff3ac1dEncodeCarsInternalDomainCars(out, *v6)
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v GetCars) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v GetCars) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *GetCars) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *GetCars) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(l, v)
+}
+func easyjson6ff3ac1dDecodeCarsInternalDomainCars(in *jlexer.Lexer, out *cars.Car) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "ID":
+			out.ID = uint64(in.Uint64())
+		case "Plate":
+			out.Plate = string(in.String())
+		case "Model":
+			out.Model = string(in.String())
+		case "Color":
+			out.Color = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson6ff3ac1dEncodeCarsInternalDomainCars(out *jwriter.Writer, in cars.Car) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"ID\":"
+		out.RawString(prefix[1:])
+		out.Uint64(uint64(in.ID))
+	}
+	{
+		const prefix string = ",\"Plate\":"
+		out.RawString(prefix)
+		out.String(string(in.Plate))
+	}
+	{
+		const prefix string = ",\"Model\":"
+		out.RawString(prefix)
+		out.String(string(in.Model))
+	}
+	{
+		const prefix string = ",\"Color\":"
+		out.RawString(prefix)
+		out.String(string(in.Color))
+	}
+	out.RawByte('}')
+}
+func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(in *jlexer.Lexer, out *ErrorResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -596,7 +770,7 @@ func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(in *jlexer.L
 		in.Consumed()
 	}
 }
-func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(out *jwriter.Writer, in ErrorResponse) {
+func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(out *jwriter.Writer, in ErrorResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -616,27 +790,27 @@ func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(out *jwriter
 // MarshalJSON supports json.Marshaler interface
 func (v ErrorResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(&w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ErrorResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse7(w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *ErrorResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(&r, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ErrorResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse7(l, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(l, v)
 }
-func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(in *jlexer.Lexer, out *CreateCar) {
+func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse9(in *jlexer.Lexer, out *CreateCar) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -667,7 +841,7 @@ func easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(in *jlexer.L
 		in.Consumed()
 	}
 }
-func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(out *jwriter.Writer, in CreateCar) {
+func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse9(out *jwriter.Writer, in CreateCar) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -682,23 +856,23 @@ func easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(out *jwriter
 // MarshalJSON supports json.Marshaler interface
 func (v CreateCar) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(&w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse9(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CreateCar) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse8(w, v)
+	easyjson6ff3ac1dEncodeCarsInternalAdaptersPrimaryRestResponse9(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CreateCar) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(&r, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse9(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CreateCar) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse8(l, v)
+	easyjson6ff3ac1dDecodeCarsInternalAdaptersPrimaryRestResponse9(l, v)
 }

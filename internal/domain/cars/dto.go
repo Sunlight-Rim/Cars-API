@@ -3,10 +3,10 @@ package cars
 // Create
 
 type CreateReq struct {
-	Token string
-	Plate string
-	Model string
-	Color string
+	UserID uint64
+	Plate  string
+	Model  string
+	Color  string
 }
 
 type CreateRes struct {
@@ -31,7 +31,7 @@ func NewCreate(r *RepoCreateRes) *CreateRes {
 // Get
 
 type GetReq struct {
-	Token string
+	UserID uint64
 }
 
 type GetRes struct {
@@ -53,10 +53,10 @@ func NewGetRes(r *RepoGetRes) *GetRes {
 // Update
 
 type UpdateReq struct {
-	Token string
-	CarID uint64
-	Model string
-	Color string
+	UserID uint64
+	CarID  uint64
+	Model  string
+	Color  string
 }
 
 type UpdateRes struct {
@@ -81,8 +81,8 @@ func NewUpdateRes(r *RepoUpdateRes) *UpdateRes {
 // Delete
 
 type DeleteReq struct {
-	Token string
-	CarID uint64
+	UserID uint64
+	CarID  uint64
 }
 
 type DeleteRes struct {

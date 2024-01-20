@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// GetMe returns user account information.
 func (h *Handlers) GetMe(c echo.Context) (err error) {
 	var (
 		req *request.GetMe

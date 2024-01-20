@@ -1,7 +1,6 @@
 package auth
 
 // Usecase
-
 type IUsecase interface {
 	Signup(*SignupReq) (*SignupRes, error)
 	Signin(*SigninReq) (*SigninRes, error)
@@ -10,13 +9,13 @@ type IUsecase interface {
 	SignoutAll(*SignoutAllReq) (*SignoutAllRes, error)
 }
 
-// Adapters
-
+// Repository
 type IRepository interface {
 	Signup(*RepoSignupReq) (*RepoSignupRes, error)
 	Signin(*RepoSigninReq) (*RepoSigninRes, error)
 }
 
+// Token service
 type IToken interface {
 	Create(userID uint64) (token string, err error)
 	Parse(token string) (claims *Claims, err error)

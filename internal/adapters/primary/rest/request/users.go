@@ -1,6 +1,7 @@
 package request
 
 import (
+	"cars/internal/domain/auth"
 	"cars/internal/domain/users"
 
 	"github.com/labstack/echo/v4"
@@ -9,15 +10,15 @@ import (
 // Get me
 
 type GetMe struct {
-	Token string
+	UserID uint64 `json:"-"`
 }
 
 func NewGetMe(c echo.Context) (*GetMe, error) {
-	return &GetMe{Token: c.Request().Header.Get("Authorization")}, nil
+	return &GetMe{UserID: c.Get("claims").(*auth.Claims).UserID}, nil
 }
 
 func (r *GetMe) ToEntity() *users.GetReq {
 	return &users.GetReq{
-		Token: r.Token,
+		UserID: r.UserID,
 	}
 }

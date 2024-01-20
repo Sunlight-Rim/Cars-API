@@ -15,6 +15,7 @@ import (
 	"cars/pkg/redis"
 	"database/sql"
 
+	"github.com/labstack/echo/v4"
 	goRedis "github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -115,16 +116,14 @@ func newAuth(postgres *sql.DB, redis *goRedis.Client) *auth.Usecase {
 
 // New Users usecase with adapters.
 func newUsers(postgres *sql.DB) *users.Usecase {
-	return users.New(
-		usersRepository.New(postgres),
-		tokenService.NewParser(viper.GetString("token.secret")),
-	)
+	return users.New(usersRepository.New(postgres))
 }
 
 // New Cars usecase with adapters.
 func newCars(postgres *sql.DB) *cars.Usecase {
-	return cars.New(
-		carsRepository.New(postgres),
-		tokenService.NewParser(viper.GetString("token.secret")),
-	)
+	return cars.New(carsRepository.New(postgres))
+}
+
+func newTokenChecker() echo.MiddlewareFunc {
+	return tokenService.CheckTokenMW(viper.GetString("token.secret"))
 }

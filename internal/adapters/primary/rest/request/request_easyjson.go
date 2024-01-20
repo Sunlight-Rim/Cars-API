@@ -394,8 +394,6 @@ func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest5(in *jlexer.Le
 			continue
 		}
 		switch key {
-		case "Token":
-			out.Token = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -410,11 +408,6 @@ func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest5(out *jwriter.
 	out.RawByte('{')
 	first := true
 	_ = first
-	{
-		const prefix string = ",\"Token\":"
-		out.RawString(prefix[1:])
-		out.String(string(in.Token))
-	}
 	out.RawByte('}')
 }
 
@@ -441,7 +434,66 @@ func (v *GetMe) UnmarshalJSON(data []byte) error {
 func (v *GetMe) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest5(l, v)
 }
-func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(in *jlexer.Lexer, out *CreateCar) {
+func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(in *jlexer.Lexer, out *GetCars) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(out *jwriter.Writer, in GetCars) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v GetCars) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v GetCars) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *GetCars) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *GetCars) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(l, v)
+}
+func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest7(in *jlexer.Lexer, out *CreateCar) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -476,7 +528,7 @@ func easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(in *jlexer.Le
 		in.Consumed()
 	}
 }
-func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(out *jwriter.Writer, in CreateCar) {
+func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest7(out *jwriter.Writer, in CreateCar) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -506,23 +558,23 @@ func easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(out *jwriter.
 // MarshalJSON supports json.Marshaler interface
 func (v CreateCar) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(&w, v)
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v CreateCar) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest6(w, v)
+	easyjson3c9d2b01EncodeCarsInternalAdaptersPrimaryRestRequest7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *CreateCar) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(&r, v)
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *CreateCar) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest6(l, v)
+	easyjson3c9d2b01DecodeCarsInternalAdaptersPrimaryRestRequest7(l, v)
 }

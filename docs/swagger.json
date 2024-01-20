@@ -215,6 +215,31 @@
       }
     },
     "/api/cars": {
+      "get": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Get all user cars.",
+        "operationId": "null",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetCarsResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      },
       "post": {
         "security": [
           {
@@ -338,6 +363,25 @@
     }
   },
   "definitions": {
+    "Car": {
+      "type": "object",
+      "properties": {
+        "Color": {
+          "type": "string"
+        },
+        "ID": {
+          "type": "integer",
+          "format": "uint64"
+        },
+        "Model": {
+          "type": "string"
+        },
+        "Plate": {
+          "type": "string"
+        }
+      },
+      "x-go-package": "cars/internal/domain/cars"
+    },
     "CreateCar": {
       "type": "object",
       "properties": {
@@ -361,6 +405,19 @@
         "message": {
           "type": "string",
           "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "GetCars": {
+      "type": "object",
+      "properties": {
+        "cars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Car"
+          },
+          "x-go-name": "Cars"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -446,7 +503,7 @@
   },
   "responses": {
     "CreateCarResponse": {
-      "description": "Create car for user.",
+      "description": "Returns ID of new car.",
       "schema": {
         "type": "object",
         "properties": {
@@ -489,6 +546,21 @@
               }
             },
             "x-go-name": "Response"
+          }
+        }
+      }
+    },
+    "GetCarsResponse": {
+      "description": "Returns user cars.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/GetCars"
           }
         }
       }

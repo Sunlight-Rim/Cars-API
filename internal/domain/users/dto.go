@@ -3,7 +3,7 @@ package users
 // Get
 
 type GetReq struct {
-	Token string
+	UserID uint64
 }
 
 type GetRes struct {
@@ -11,7 +11,7 @@ type GetRes struct {
 }
 
 type RepoGetReq struct {
-	ID uint64
+	UserID uint64
 }
 
 type RepoGetRes struct {
@@ -25,7 +25,7 @@ func NewGetMeRes(r *RepoGetRes) *GetRes {
 // Update info
 
 type UpdateInfoReq struct {
-	Token    string
+	UserID   uint64
 	Username string
 	Phone    uint64
 }
@@ -35,7 +35,7 @@ type UpdateInfoRes struct {
 }
 
 type RepoUpdateInfoReq struct {
-	ID       uint64
+	UserID   uint64
 	Username string
 	Phone    uint64
 }
@@ -47,19 +47,19 @@ type RepoUpdateInfoRes struct {
 // Update password
 
 type UpdatePasswordReq struct {
-	Token       string
+	UserID      uint64
 	NewPassword string
 }
 
 type RepoUpdatePasswordReq struct {
-	ID              uint64
+	UserID          uint64
 	NewPasswordHash string
 }
 
 // Delete
 
 type DeleteReq struct {
-	Token string
+	UserID uint64
 }
 
 type DeleteRes struct {
@@ -67,7 +67,7 @@ type DeleteRes struct {
 }
 
 type RepoDeleteReq struct {
-	ID uint64
+	UserID uint64
 }
 
 type RepoDeleteRes struct {

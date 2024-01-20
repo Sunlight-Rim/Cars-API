@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// CreateCar adds a new car to user.
 func (h *Handlers) CreateCar(c echo.Context) (err error) {
 	var (
 		req *request.CreateCar
@@ -37,7 +36,31 @@ func (h *Handlers) CreateCar(c echo.Context) (err error) {
 	return nil
 }
 
-// GetCars
+func (h *Handlers) GetCars(c echo.Context) (err error) {
+	var (
+		req *request.GetCars
+		res *response.GetCars
+	)
+
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	req = request.NewGetCars(c)
+
+	// Call use case
+	resUcase, err := h.cars.Get(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "get cars")
+	}
+
+	res = response.NewGetCars(resUcase)
+	return nil
+}
 
 // Update
 

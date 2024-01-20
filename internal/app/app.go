@@ -24,6 +24,8 @@ func Start() {
 		newAuth(postgres, redis),
 		newUsers(postgres),
 		newCars(postgres),
+
+		newTokenChecker(),
 	)
 
 	// Register service handlers

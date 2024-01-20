@@ -13,6 +13,7 @@ import (
 	"cars/internal/domain/users"
 	"cars/pkg/errors"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	echomw "github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
@@ -25,12 +26,12 @@ type server struct {
 	graphql *graphql.Handlers
 }
 
-func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
+func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase, checkTokenMW echo.MiddlewareFunc) *server {
 	s := server{
 		echo: echo.New(),
 
-		rest:    rest.New(auth, users, cars),
-		graphql: graphql.New(auth, users, cars),
+		rest:    rest.New(auth, users, cars, checkTokenMW),
+		graphql: graphql.New(auth, users, cars, checkTokenMW),
 	}
 
 	s.echo.Use(echomw.Recover(), echomw.CORS(), echomw.RequestID(), LoggerMW())
@@ -38,12 +39,18 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
 	// Custom Echo error handler
 	s.echo.HTTPErrorHandler = func(err error, c echo.Context) {
 		if httpError := new(echo.HTTPError); errors.As(err, &httpError) {
-			switch httpError.Code {
-			case http.StatusNotFound:
+			switch {
+			case httpError.Code == http.StatusNotFound:
 				c.JSONBlob(response.Map(nil, errors.NotFound))
 
-			case http.StatusMethodNotAllowed:
+			case httpError.Code == http.StatusMethodNotAllowed:
 				c.JSONBlob(response.Map(nil, errors.MethodNotAllowed))
+
+			case httpError.Message == echojwt.ErrJWTMissing.Message:
+				c.JSONBlob(response.Map(nil, errors.MissingToken))
+
+			case httpError.Message == echojwt.ErrJWTInvalid.Message:
+				c.JSONBlob(response.Map(nil, errors.InvalidToken))
 			}
 		}
 	}

@@ -90,12 +90,23 @@ type GetMeResponse struct {
 	} `json:"body"`
 }
 
-// Create car for user.
+// Returns ID of new car.
 // swagger:response CreateCarResponse
 type CreateCarResponse struct {
 	// in: body
 	Body struct {
 		Response response.CreateCar `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns user cars.
+// swagger:response GetCarsResponse
+type GetCarsResponse struct {
+	// in: body
+	Body struct {
+		Response response.GetCars `json:"response"`
 		// example: null
 		Error any `json:"error"`
 	} `json:"body"`

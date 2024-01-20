@@ -3,28 +3,20 @@ package cars
 import "cars/pkg/errors"
 
 type Usecase struct {
-	repo  IRepository
-	token IToken
+	repo IRepository
 }
 
-func New(repo IRepository, token IToken) *Usecase {
+func New(repo IRepository) *Usecase {
 	return &Usecase{
-		repo:  repo,
-		token: token,
+		repo: repo,
 	}
 }
 
 // Create adds car to user in repository.
 func (uc *Usecase) Create(req *CreateReq) (*CreateRes, error) {
-	// Parse token
-	claims, err := uc.token.Parse(req.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse token")
-	}
-
 	// Add car to user in database
 	resRepo, err := uc.repo.Create(&RepoCreateReq{
-		UserID: claims.UserID,
+		UserID: req.UserID,
 		Plate:  req.Plate,
 		Model:  req.Model,
 		Color:  req.Color,
@@ -38,15 +30,9 @@ func (uc *Usecase) Create(req *CreateReq) (*CreateRes, error) {
 
 // Get returns all user cars from repository.
 func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
-	// Parse token
-	claims, err := uc.token.Parse(req.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse token")
-	}
-
 	// Add car to user in database
 	resRepo, err := uc.repo.Get(&RepoGetReq{
-		UserID: claims.UserID,
+		UserID: req.UserID,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "repository")
@@ -57,15 +43,9 @@ func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
 
 // Update changes user car in repository and returns changed car.
 func (uc *Usecase) Update(req *UpdateReq) (*UpdateRes, error) {
-	// Parse token
-	claims, err := uc.token.Parse(req.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse token")
-	}
-
 	// Add car to user in database
 	resRepo, err := uc.repo.Update(&RepoUpdateReq{
-		UserID: claims.UserID,
+		UserID: req.UserID,
 		CarID:  req.CarID,
 		Model:  req.Model,
 		Color:  req.Color,
@@ -79,15 +59,9 @@ func (uc *Usecase) Update(req *UpdateReq) (*UpdateRes, error) {
 
 // Delete deletes user car in repository.
 func (uc *Usecase) Delete(req *DeleteReq) (*DeleteRes, error) {
-	// Parse token
-	claims, err := uc.token.Parse(req.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse token")
-	}
-
 	// Add car to user in database
 	resRepo, err := uc.repo.Delete(&RepoDeleteReq{
-		UserID: claims.UserID,
+		UserID: req.UserID,
 		CarID:  req.CarID,
 	})
 	if err != nil {

@@ -29,7 +29,7 @@ func (r *repository) Get(req *users.RepoGetReq) (*users.RepoGetRes, error) {
 			phone
 		FROM api.users
 		WHERE id = $1
-	`, req.ID).Scan(
+	`, req.UserID).Scan(
 		&user.ID,
 		&user.Username,
 		&user.Email,

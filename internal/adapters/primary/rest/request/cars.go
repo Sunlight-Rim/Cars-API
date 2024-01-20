@@ -3,6 +3,7 @@ package request
 import (
 	"regexp"
 
+	"cars/internal/domain/auth"
 	"cars/internal/domain/cars"
 	"cars/pkg/errors"
 
@@ -15,14 +16,14 @@ var plateRegex = regexp.MustCompile(`^[a-z]{3}[0-9]{3}$`)
 // Create car
 
 type CreateCar struct {
-	Token string `json:"-"`
-	Plate string `json:"plate"`
-	Model string `json:"model"`
-	Color string `json:"color"`
+	UserID uint64 `json:"-"`
+	Plate  string `json:"plate"`
+	Model  string `json:"model"`
+	Color  string `json:"color"`
 }
 
 func NewCreateCar(c echo.Context) (*CreateCar, error) {
-	r := CreateCar{Token: c.Request().Header.Get("Authorization")}
+	r := CreateCar{UserID: c.Get("claims").(*auth.Claims).UserID}
 
 	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
 		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
@@ -45,9 +46,25 @@ func (r *CreateCar) Validate() error {
 
 func (r *CreateCar) ToEntity() *cars.CreateReq {
 	return &cars.CreateReq{
-		Token: r.Token,
-		Plate: r.Plate,
-		Model: r.Model,
-		Color: r.Color,
+		UserID: r.UserID,
+		Plate:  r.Plate,
+		Model:  r.Model,
+		Color:  r.Color,
+	}
+}
+
+// Get cars
+
+type GetCars struct {
+	UserID uint64 `json:"-"`
+}
+
+func NewGetCars(c echo.Context) *GetCars {
+	return &GetCars{UserID: c.Get("claims").(*auth.Claims).UserID}
+}
+
+func (r *GetCars) ToEntity() *cars.GetReq {
+	return &cars.GetReq{
+		UserID: r.UserID,
 	}
 }

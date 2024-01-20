@@ -3,27 +3,21 @@ package users
 import "cars/pkg/errors"
 
 type Usecase struct {
-	repo  IRepository
-	token IToken
+	repo IRepository
 }
 
-func New(repo IRepository, token IToken) *Usecase {
+func New(repo IRepository) *Usecase {
 	return &Usecase{
-		repo:  repo,
-		token: token,
+		repo: repo,
 	}
 }
 
-// Get parses user ID from token and returns his account information.
+// Get returns user account information.
 func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
-	// Parse token
-	claims, err := uc.token.Parse(req.Token)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse token")
-	}
-
 	// Get information
-	resRepo, err := uc.repo.Get(&RepoGetReq{claims.UserID})
+	resRepo, err := uc.repo.Get(&RepoGetReq{
+		UserID: req.UserID,
+	})
 	if err != nil {
 		return nil, errors.Wrap(err, "repository")
 	}
