@@ -46,6 +46,10 @@ type RepoGetRes struct {
 	Cars []*Car
 }
 
+func NewGetRes(r *RepoGetRes) *GetRes {
+	return &GetRes{Cars: r.Cars}
+}
+
 // Update
 
 type UpdateReq struct {
@@ -70,6 +74,10 @@ type RepoUpdateRes struct {
 	*Car
 }
 
+func NewUpdateRes(r *RepoUpdateRes) *UpdateRes {
+	return &UpdateRes{Car: r.Car}
+}
+
 // Delete
 
 type DeleteReq struct {
@@ -88,4 +96,8 @@ type RepoDeleteReq struct {
 
 type RepoDeleteRes struct {
 	*Car
+}
+
+func NewDeleteRes(r *RepoDeleteRes) *DeleteRes {
+	return &DeleteRes{Car: r.Car}
 }

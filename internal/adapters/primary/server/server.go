@@ -62,7 +62,7 @@ func (s *server) Start() error {
 
 // Shutdown server.
 func (s *server) Shutdown(ctx context.Context) error {
-	healthStatus = []byte("Dying...")
+	healthStatus = []byte("Shutting down...")
 
 	if err := s.echo.Shutdown(ctx); err != nil {
 		return errors.Wrap(err, "echo shutdown")
