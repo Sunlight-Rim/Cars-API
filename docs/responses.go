@@ -47,7 +47,7 @@ type SigninResponse struct {
 }
 
 // Returns new token.
-// swagger:response SigninResponse
+// swagger:response RefreshResponse
 type RefreshResponse struct {
 	// in: body
 	Body struct {
@@ -68,7 +68,18 @@ type SignoutResponse struct {
 	} `json:"body"`
 }
 
-// User account data.
+// Returns revoked tokens.
+// swagger:response SignoutAllResponse
+type SignoutAllResponse struct {
+	// in: body
+	Body struct {
+		Response response.SignoutAll `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns user account data.
 // swagger:response GetMeResponse
 type GetMeResponse struct {
 	// in: body

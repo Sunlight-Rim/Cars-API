@@ -90,7 +90,7 @@ func (s *service) StoreUserRefresh(userID uint64, token string) error {
 		nil,
 		s.refreshExp,
 	).Err(); err != nil {
-		return errors.Wrap(err, "save refresh token")
+		return errors.Wrap(err, "store token")
 	}
 
 	return nil
@@ -105,31 +105,31 @@ func (s *service) RevokeUserRefresh(userID uint64, token string) error {
 		if errors.Is(err, redis.Nil) {
 			return errors.Wrap(errors.InvalidToken, "token not in redis")
 		}
-		return errors.Wrap(err, "pop refresh token")
+		return errors.Wrap(err, "revoke token")
 	}
 
 	return nil
 }
 
 // RevokeUserRefreshAll deletes all refresh tokens by user ID from redis.
-func (s *service) RevokeUserRefreshAll(userID uint64) error {
+func (s *service) RevokeUserRefreshAll(userID uint64) ([]string, error) {
 	var tokens []string
 
 	if err := s.redis.Keys(
 		context.TODO(),
 		fmt.Sprintf("%s_%d_*", refreshKeyPrefix, userID),
 	).ScanSlice(&tokens); err != nil {
-		return errors.Wrap(err, "get all refresh tokens")
+		return nil, errors.Wrap(err, "get all tokens")
 	}
 
 	if err := s.redis.Del(
 		context.TODO(),
 		tokens...,
 	).Err(); err != nil {
-		return errors.Wrap(err, "remove all refresh tokens")
+		return nil, errors.Wrap(err, "revoke all tokens")
 	}
 
-	return nil
+	return tokens, nil
 }
 
 // Parse token claims to struct.

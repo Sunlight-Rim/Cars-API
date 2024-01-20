@@ -71,7 +71,17 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiAuth.POST("/signout", h.Signout)
-	// apiAuth.POST("/signout-all", h.SignoutAll)
+	/*
+		swagger:route POST /api/auth/signout-all Auth SignoutAllRequest
+
+		Revoke all user refresh tokens.
+
+			schemes: http
+			responses:
+				200: SignoutAllResponse
+				default: ErrorResponse
+	*/
+	apiAuth.POST("/signout-all", h.SignoutAll)
 
 	// User
 

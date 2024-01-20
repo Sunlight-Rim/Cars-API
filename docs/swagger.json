@@ -128,6 +128,42 @@
         }
       }
     },
+    "/api/auth/signout-all": {
+      "post": {
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Revoke all user refresh tokens.",
+        "operationId": "SignoutAllRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "x-go-name": "Token"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SignoutAllResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
     "/api/auth/signup": {
       "post": {
         "description": "Password must contain at least one special character in a range [.,\\(\\);:\\\\\\/\\[\\]\\{\\}@$!%*#?\u0026=].",
@@ -382,6 +418,19 @@
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
     },
+    "SignoutAll": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Tokens"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "Signup": {
       "type": "object",
       "properties": {
@@ -444,7 +493,7 @@
       }
     },
     "GetMeResponse": {
-      "description": "User account data.",
+      "description": "Returns user account data.",
       "schema": {
         "type": "object",
         "properties": {
@@ -458,7 +507,7 @@
         }
       }
     },
-    "SigninResponse": {
+    "RefreshResponse": {
       "description": "Returns new token.",
       "schema": {
         "type": "object",
@@ -469,6 +518,36 @@
           },
           "response": {
             "$ref": "#/definitions/Refresh"
+          }
+        }
+      }
+    },
+    "SigninResponse": {
+      "description": "Returns token.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/Signin"
+          }
+        }
+      }
+    },
+    "SignoutAllResponse": {
+      "description": "Returns revoked tokens.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/SignoutAll"
           }
         }
       }

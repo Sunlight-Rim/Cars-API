@@ -103,8 +103,21 @@ func (uc *Usecase) Signout(req *SignoutReq) (*SignoutRes, error) {
 	return NewSignoutRes(req.Token), nil
 }
 
-func (uc *Usecase) SignoutAll(*SignoutAllReq) (*SignoutAllRes, error) {
-	return nil, nil
+// Signout parses and revokes all user tokens.
+func (uc *Usecase) SignoutAll(req *SignoutAllReq) (*SignoutAllRes, error) {
+	// Parse token
+	claims, err := uc.token.Parse(req.Token)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse token")
+	}
+
+	// Revoke all tokens
+	tokens, err := uc.token.RevokeUserRefreshAll(claims.UserID)
+	if err != nil {
+		return nil, errors.Wrap(err, "revoke all tokens")
+	}
+
+	return NewSignoutAllRes(tokens), nil
 }
 
 // hash generates SHA-256 hash string.

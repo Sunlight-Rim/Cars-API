@@ -87,5 +87,9 @@ type SignoutAllReq struct {
 }
 
 type SignoutAllRes struct {
-	Token []string
+	Tokens []string
+}
+
+func NewSignoutAllRes(tokens []string) *SignoutAllRes {
+	return &SignoutAllRes{Tokens: tokens}
 }

@@ -40,6 +40,15 @@ type SignoutRequest struct {
 	}
 }
 
+// swagger:parameters SignoutAllRequest
+type SignoutAllRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Token string `json:"token"`
+	}
+}
+
 // swagger:parameters CreateCarRequest
 type CreateCarRequest struct {
 	// in: body

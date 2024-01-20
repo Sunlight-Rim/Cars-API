@@ -127,3 +127,23 @@ func (r *Signout) ToEntity() *auth.SignoutReq {
 }
 
 // Singout all
+
+type SignoutAll struct {
+	Token string `json:"token"`
+}
+
+func NewSignoutAll(c echo.Context) (*SignoutAll, error) {
+	var r SignoutAll
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *SignoutAll) ToEntity() *auth.SignoutAllReq {
+	return &auth.SignoutAllReq{
+		Token: r.Token,
+	}
+}

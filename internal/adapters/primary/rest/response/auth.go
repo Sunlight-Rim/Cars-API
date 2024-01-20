@@ -57,3 +57,11 @@ func NewSignout(r *auth.SignoutRes) *Signout {
 }
 
 // Singout all
+
+type SignoutAll struct {
+	Tokens []string `json:"tokens"`
+}
+
+func NewSignoutAll(r *auth.SignoutAllRes) *SignoutAll {
+	return &SignoutAll{Tokens: r.Tokens}
+}

@@ -23,5 +23,5 @@ type IToken interface {
 	ParseExpired(token string) (claims *Claims, err error)
 	StoreUserRefresh(userID uint64, token string) error
 	RevokeUserRefresh(userID uint64, token string) error
-	RevokeUserRefreshAll(userID uint64) error
+	RevokeUserRefreshAll(userID uint64) (tokens []string, err error)
 }
