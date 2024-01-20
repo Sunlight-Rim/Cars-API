@@ -24,7 +24,7 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Create new token from expired.",
+        "summary": "Create new token from expired, also revoke expired.",
         "operationId": "RefreshRequest",
         "parameters": [
           {
@@ -85,6 +85,42 @@
         "responses": {
           "200": {
             "$ref": "#/responses/SigninResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/auth/signout": {
+      "post": {
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Revoke refresh token.",
+        "operationId": "SignoutRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "x-go-name": "Token"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SignoutResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -336,6 +372,16 @@
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
     },
+    "Signout": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "x-go-name": "Token"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "Signup": {
       "type": "object",
       "properties": {
@@ -427,8 +473,23 @@
         }
       }
     },
+    "SignoutResponse": {
+      "description": "Returns requested token.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/Signout"
+          }
+        }
+      }
+    },
     "SignupResponse": {
-      "description": "Successfully registered.",
+      "description": "Returns user ID.",
       "schema": {
         "type": "object",
         "properties": {

@@ -48,4 +48,12 @@ func NewRefresh(r *auth.RefreshRes) *Refresh {
 
 // Signout
 
+type Signout struct {
+	Token string `json:"token"`
+}
+
+func NewSignout(r *auth.SignoutRes) *Signout {
+	return &Signout{Token: r.Token}
+}
+
 // Singout all

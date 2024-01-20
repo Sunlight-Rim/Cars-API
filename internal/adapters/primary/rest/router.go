@@ -52,7 +52,7 @@ func (h *Handlers) Register(api *echo.Group) {
 	/*
 		swagger:route POST /api/auth/refresh Auth RefreshRequest
 
-		Create new token from expired.
+		Create new token from expired, also revoke expired.
 
 			schemes: http
 			responses:
@@ -60,7 +60,17 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiAuth.POST("/refresh", h.Refresh)
-	// apiAuth.POST("/signout", h.Signout)
+	/*
+		swagger:route POST /api/auth/signout Auth SignoutRequest
+
+		Revoke refresh token.
+
+			schemes: http
+			responses:
+				200: SignoutResponse
+				default: ErrorResponse
+	*/
+	apiAuth.POST("/signout", h.Signout)
 	// apiAuth.POST("/signout-all", h.SignoutAll)
 
 	// User

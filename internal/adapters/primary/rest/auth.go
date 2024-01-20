@@ -91,3 +91,31 @@ func (h *Handlers) Refresh(c echo.Context) (err error) {
 	res = response.NewRefresh(resUcase)
 	return nil
 }
+
+func (h *Handlers) Signout(c echo.Context) (err error) {
+	var (
+		req *request.Signout
+		res *response.Signout
+	)
+
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewSignout(c); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call usecase
+	resUcase, err := h.auth.Signout(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "signout")
+	}
+
+	res = response.NewSignout(resUcase)
+	return nil
+}

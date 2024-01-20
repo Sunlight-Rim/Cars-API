@@ -24,7 +24,7 @@ type ErrorsListResponse struct {
 	} `json:"body"`
 }
 
-// Successfully registered.
+// Returns user ID.
 // swagger:response SignupResponse
 type SignupResponse struct {
 	// in: body
@@ -35,7 +35,7 @@ type SignupResponse struct {
 	} `json:"body"`
 }
 
-// Successfully signed in. Returns token.
+// Returns token.
 // swagger:response SigninResponse
 type SigninResponse struct {
 	// in: body
@@ -52,6 +52,17 @@ type RefreshResponse struct {
 	// in: body
 	Body struct {
 		Response response.Refresh `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns requested token.
+// swagger:response SignoutResponse
+type SignoutResponse struct {
+	// in: body
+	Body struct {
+		Response response.Signout `json:"response"`
 		// example: null
 		Error any `json:"error"`
 	} `json:"body"`

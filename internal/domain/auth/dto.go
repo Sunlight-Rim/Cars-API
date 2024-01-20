@@ -76,6 +76,10 @@ type SignoutRes struct {
 	Token string
 }
 
+func NewSignoutRes(token string) *SignoutRes {
+	return &SignoutRes{Token: token}
+}
+
 // Signout all
 
 type SignoutAllReq struct {

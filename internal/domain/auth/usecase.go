@@ -53,13 +53,14 @@ func (uc *Usecase) Signin(req *SigninReq) (*SigninRes, error) {
 	}
 
 	// Store token
-	if err := uc.token.StoreUserRefresh(token, resRepo.ID); err != nil {
+	if err := uc.token.StoreUserRefresh(resRepo.ID, token); err != nil {
 		return nil, errors.Wrap(err, "store token")
 	}
 
 	return NewSigninRes(token), nil
 }
 
+// Refresh revokes requested token, generates and saves a new token.
 func (uc *Usecase) Refresh(req *RefreshReq) (*RefreshRes, error) {
 	// Parse expired token
 	claims, err := uc.token.ParseExpired(req.Token)
@@ -68,7 +69,7 @@ func (uc *Usecase) Refresh(req *RefreshReq) (*RefreshRes, error) {
 	}
 
 	// Revoke expired token
-	if err := uc.token.RevokeUserRefresh(req.Token, claims.UserID); err != nil {
+	if err := uc.token.RevokeUserRefresh(claims.UserID, req.Token); err != nil {
 		return nil, errors.Wrap(err, "revoke token")
 	}
 
@@ -79,15 +80,27 @@ func (uc *Usecase) Refresh(req *RefreshReq) (*RefreshRes, error) {
 	}
 
 	// Store new token
-	if err := uc.token.StoreUserRefresh(token, claims.UserID); err != nil {
+	if err := uc.token.StoreUserRefresh(claims.UserID, token); err != nil {
 		return nil, errors.Wrap(err, "store token")
 	}
 
 	return NewRefreshRes(token), nil
 }
 
-func (uc *Usecase) Signout(*SignoutReq) (*SignoutRes, error) {
-	return nil, nil
+// Signout parses and revokes requested token.
+func (uc *Usecase) Signout(req *SignoutReq) (*SignoutRes, error) {
+	// Parse token
+	claims, err := uc.token.Parse(req.Token)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse token")
+	}
+
+	// Revoke token
+	if err := uc.token.RevokeUserRefresh(claims.UserID, req.Token); err != nil {
+		return nil, errors.Wrap(err, "revoke token")
+	}
+
+	return NewSignoutRes(req.Token), nil
 }
 
 func (uc *Usecase) SignoutAll(*SignoutAllReq) (*SignoutAllRes, error) {

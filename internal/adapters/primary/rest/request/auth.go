@@ -106,4 +106,24 @@ func (r *Refresh) ToEntity() *auth.RefreshReq {
 
 // Signout
 
+type Signout struct {
+	Token string `json:"token"`
+}
+
+func NewSignout(c echo.Context) (*Signout, error) {
+	var r Signout
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *Signout) ToEntity() *auth.SignoutReq {
+	return &auth.SignoutReq{
+		Token: r.Token,
+	}
+}
+
 // Singout all

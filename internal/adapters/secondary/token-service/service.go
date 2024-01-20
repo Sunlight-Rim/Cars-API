@@ -83,7 +83,7 @@ func (s *service) ParseExpired(token string) (*auth.Claims, error) {
 }
 
 // StoreUserRefresh saves refresh token by user ID to redis.
-func (s *service) StoreUserRefresh(token string, userID uint64) error {
+func (s *service) StoreUserRefresh(userID uint64, token string) error {
 	if err := s.redis.Set(
 		context.TODO(),
 		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
@@ -97,7 +97,7 @@ func (s *service) StoreUserRefresh(token string, userID uint64) error {
 }
 
 // RevokeUserRefresh deletes refresh token by user ID from redis.
-func (s *service) RevokeUserRefresh(token string, userID uint64) error {
+func (s *service) RevokeUserRefresh(userID uint64, token string) error {
 	if err := s.redis.GetDel(
 		context.TODO(),
 		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
@@ -111,8 +111,8 @@ func (s *service) RevokeUserRefresh(token string, userID uint64) error {
 	return nil
 }
 
-// RevokeUserAllRefresh deletes all refresh tokens by user ID from redis.
-func (s *service) RevokeUserAllRefresh(userID uint64) error {
+// RevokeUserRefreshAll deletes all refresh tokens by user ID from redis.
+func (s *service) RevokeUserRefreshAll(userID uint64) error {
 	var tokens []string
 
 	if err := s.redis.Keys(
@@ -134,15 +134,13 @@ func (s *service) RevokeUserAllRefresh(userID uint64) error {
 
 // Parse token claims to struct.
 func parse(jwtClaims jwt.MapClaims) (*auth.Claims, error) {
-	var claims auth.Claims
-
 	// Numeric values is float64 for "encoding/json"
 	userID, ok := jwtClaims["user_id"].(float64)
 	if !ok {
 		return nil, errors.Wrap(errors.InvalidToken, "user_id")
 	}
 
-	claims.UserID = uint64(userID)
-
-	return &claims, nil
+	return &auth.Claims{
+		UserID: uint64(userID),
+	}, nil
 }
