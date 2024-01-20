@@ -7,7 +7,7 @@ import "cars/internal/domain/auth"
 type IUsecase interface {
 	Create(*CreateReq) (*CreateRes, error)
 	Get(*GetReq) (*GetRes, error)
-	UpdateColor(*UpdateColorReq) (*UpdateColorRes, error)
+	Update(*UpdateReq) (*UpdateRes, error)
 	Delete(*DeleteReq) (*DeleteRes, error)
 }
 
@@ -16,7 +16,7 @@ type IUsecase interface {
 type IRepository interface {
 	Create(*RepoCreateReq) (*RepoCreateRes, error)
 	Get(*RepoGetReq) (*RepoGetRes, error)
-	UpdateColor(*RepoUpdateColorReq) (*RepoUpdateColorRes, error)
+	Update(*RepoUpdateReq) (*RepoUpdateRes, error)
 	Delete(*RepoDeleteReq) (*RepoDeleteRes, error)
 }
 

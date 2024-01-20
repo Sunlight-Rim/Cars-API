@@ -21,7 +21,7 @@ type IToken interface {
 	Create(userID uint64) (token string, err error)
 	Parse(token string) (claims *Claims, err error)
 	ParseExpired(token string) (claims *Claims, err error)
-	SaveRefresh(token string, userID uint64) error
-	RemoveRefresh(token string, userID uint64) error
-	RemoveAllRefresh(userID uint64) error
+	StoreUserRefresh(token string, userID uint64) error
+	RevokeUserRefresh(token string, userID uint64) error
+	RevokeUserAllRefresh(userID uint64) error
 }

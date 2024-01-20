@@ -22,7 +22,7 @@ func (r *repository) Create(req *cars.RepoCreateReq) (*cars.RepoCreateRes, error
 func (r *repository) Get(req *cars.RepoGetReq) (*cars.RepoGetRes, error) {
 	return nil, nil
 }
-func (r *repository) UpdateColor(req *cars.RepoUpdateColorReq) (*cars.RepoUpdateColorRes, error) {
+func (r *repository) Update(req *cars.RepoUpdateReq) (*cars.RepoUpdateRes, error) {
 	return nil, nil
 }
 func (r *repository) Delete(req *cars.RepoDeleteReq) (*cars.RepoDeleteRes, error) {

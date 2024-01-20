@@ -8,14 +8,14 @@ type GetMe struct {
 	ID       uint64 `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	Address  string `json:"address"`
+	Phone    uint64 `json:"phone"`
 }
 
-func NewGetMe(r *users.GetMeRes) *GetMe {
+func NewGetMe(r *users.GetRes) *GetMe {
 	return &GetMe{
 		ID:       r.ID,
 		Username: r.Username,
 		Email:    r.Email,
-		Address:  r.Address,
+		Phone:    r.Phone,
 	}
 }

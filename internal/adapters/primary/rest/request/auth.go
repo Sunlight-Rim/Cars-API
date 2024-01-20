@@ -19,7 +19,7 @@ var passwordRegex = regexp.MustCompile(`[.,\(\);:\\\/\[\]\{\}@$!%*#?&=]`)
 type Signup struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	Address  string `json:"address"`
+	Phone    uint64 `json:"phone"`
 	Password string `json:"password"`
 }
 
@@ -53,7 +53,7 @@ func (r *Signup) ToEntity() *auth.SignupReq {
 	return &auth.SignupReq{
 		Username: r.Username,
 		Email:    r.Email,
-		Address:  r.Address,
+		Phone:    r.Phone,
 		Password: r.Password,
 	}
 }
@@ -83,6 +83,26 @@ func (r *Signin) ToEntity() *auth.SigninReq {
 }
 
 // Refresh
+
+type Refresh struct {
+	Token string `json:"token"`
+}
+
+func NewRefresh(c echo.Context) (*Refresh, error) {
+	var r Refresh
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *Refresh) ToEntity() *auth.RefreshReq {
+	return &auth.RefreshReq{
+		Token: r.Token,
+	}
+}
 
 // Signout
 

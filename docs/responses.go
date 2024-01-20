@@ -46,12 +46,34 @@ type SigninResponse struct {
 	} `json:"body"`
 }
 
+// Returns new token.
+// swagger:response SigninResponse
+type RefreshResponse struct {
+	// in: body
+	Body struct {
+		Response response.Refresh `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
 // User account data.
 // swagger:response GetMeResponse
 type GetMeResponse struct {
 	// in: body
 	Body struct {
 		Response response.GetMe `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Create car for user.
+// swagger:response CreateCarResponse
+type CreateCarResponse struct {
+	// in: body
+	Body struct {
+		Response response.CreateCar `json:"response"`
 		// example: null
 		Error any `json:"error"`
 	} `json:"body"`

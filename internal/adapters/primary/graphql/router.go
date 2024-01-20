@@ -22,4 +22,4 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *Handlers
 	}
 }
 
-func (h Handlers) Register(api *echo.Group) {}
+func (h *Handlers) Register(api *echo.Group) {}

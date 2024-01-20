@@ -16,8 +16,8 @@ func NewGetMe(c echo.Context) (*GetMe, error) {
 	return &GetMe{Token: c.Request().Header.Get("Authorization")}, nil
 }
 
-func (r *GetMe) ToEntity() *users.GetMeReq {
-	return &users.GetMeReq{
+func (r *GetMe) ToEntity() *users.GetReq {
+	return &users.GetReq{
 		Token: r.Token,
 	}
 }

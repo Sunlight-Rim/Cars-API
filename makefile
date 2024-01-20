@@ -1,6 +1,6 @@
 # Compile & run app
 run:
-	@go run cmd/api/main.go $(ARGS)
+	@go run cmd/api/main.go $(args)
 
 # Generate easyjson marshallers
 json:

@@ -101,9 +101,9 @@ func connectRedis() *goRedis.Client {
 }
 
 // New Auth usecase with adapters.
-func newAuth(postrges *sql.DB, redis *goRedis.Client) *auth.Usecase {
+func newAuth(postgres *sql.DB, redis *goRedis.Client) *auth.Usecase {
 	return auth.New(
-		authRepository.New(postrges),
+		authRepository.New(postgres),
 		tokenService.New(
 			redis,
 			viper.GetString("token.secret"),
@@ -114,17 +114,17 @@ func newAuth(postrges *sql.DB, redis *goRedis.Client) *auth.Usecase {
 }
 
 // New Users usecase with adapters.
-func newUsers(postrges *sql.DB) *users.Usecase {
+func newUsers(postgres *sql.DB) *users.Usecase {
 	return users.New(
-		usersRepository.New(postrges),
+		usersRepository.New(postgres),
 		tokenService.NewParser(viper.GetString("token.secret")),
 	)
 }
 
 // New Cars usecase with adapters.
-func newCars(postrges *sql.DB) *cars.Usecase {
+func newCars(postgres *sql.DB) *cars.Usecase {
 	return cars.New(
-		carsRepository.New(postrges),
+		carsRepository.New(postgres),
 		tokenService.NewParser(viper.GetString("token.secret")),
 	)
 }

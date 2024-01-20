@@ -17,7 +17,7 @@ func New(postgres *sql.DB) *repository {
 	}
 }
 
-func (r *repository) GetMe(req *users.RepoGetMeReq) (*users.RepoGetMeRes, error) {
+func (r *repository) Get(req *users.RepoGetReq) (*users.RepoGetRes, error) {
 	var user users.User
 
 	// Add user
@@ -26,19 +26,19 @@ func (r *repository) GetMe(req *users.RepoGetMeReq) (*users.RepoGetMeRes, error)
 			id,
 			username,
 			email,
-			"address"
+			phone
 		FROM api.users
 		WHERE id = $1
 	`, req.ID).Scan(
 		&user.ID,
 		&user.Username,
 		&user.Email,
-		&user.Address,
+		&user.Phone,
 	); err != nil {
 		return nil, errors.Wrap(err, "adding user")
 	}
 
-	return &users.RepoGetMeRes{User: &user}, nil
+	return &users.RepoGetRes{User: &user}, nil
 }
 
 func (r *repository) UpdateInfo(req *users.RepoUpdateInfoReq) (*users.RepoUpdateInfoRes, error) {

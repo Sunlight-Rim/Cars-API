@@ -38,6 +38,14 @@ func NewSignin(r *auth.SigninRes) *Signin {
 
 // Refresh
 
+type Refresh struct {
+	Token string `json:"token"`
+}
+
+func NewRefresh(r *auth.RefreshRes) *Refresh {
+	return &Refresh{Token: r.Token}
+}
+
 // Signout
 
 // Singout all

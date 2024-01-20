@@ -14,8 +14,8 @@ func New(repo IRepository, token IToken) *Usecase {
 	}
 }
 
-// GetMe parses user ID from token and returns his account information.
-func (uc *Usecase) GetMe(req *GetMeReq) (*GetMeRes, error) {
+// Get parses user ID from token and returns his account information.
+func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
 	// Parse token
 	claims, err := uc.token.Parse(req.Token)
 	if err != nil {
@@ -23,7 +23,7 @@ func (uc *Usecase) GetMe(req *GetMeReq) (*GetMeRes, error) {
 	}
 
 	// Get information
-	resRepo, err := uc.repo.GetMe(&RepoGetMeReq{
+	resRepo, err := uc.repo.Get(&RepoGetReq{
 		ID: claims.UserID,
 	})
 	if err != nil {

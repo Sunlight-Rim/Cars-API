@@ -28,11 +28,17 @@ func (h *Handlers) GetMe(c echo.Context) (err error) {
 	}
 
 	// Call usecase
-	resUcase, err := h.users.GetMe(req.ToEntity())
+	resUcase, err := h.users.Get(req.ToEntity())
 	if err != nil {
-		return errors.Wrap(err, "signin")
+		return errors.Wrap(err, "get")
 	}
 
 	res = response.NewGetMe(resUcase)
 	return nil
 }
+
+// UpdateInfo
+
+// UpdatePassword
+
+// DeleteUser

@@ -7,7 +7,7 @@ type SignupRequest struct {
 	Body struct {
 		Username string `json:"username"`
 		Email    string `json:"email"`
-		Address  string `json:"address"`
+		Phone    uint64 `json:"phone"`
 		Password string `json:"password"`
 	}
 }
@@ -19,5 +19,25 @@ type SigninRequest struct {
 	Body struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
+	}
+}
+
+// swagger:parameters RefreshRequest
+type RefreshRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Token string `json:"token"`
+	}
+}
+
+// swagger:parameters CreateCarRequest
+type CreateCarRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Plate string `json:"plate"`
+		Model string `json:"model"`
+		Color string `json:"color"`
 	}
 }

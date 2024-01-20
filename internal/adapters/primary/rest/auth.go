@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Signup registers a new user.
 func (h *Handlers) Signup(c echo.Context) (err error) {
 	var (
 		req *request.Signup
@@ -37,7 +36,6 @@ func (h *Handlers) Signup(c echo.Context) (err error) {
 	return nil
 }
 
-// Signin provides login user to his account.
 func (h *Handlers) Signin(c echo.Context) (err error) {
 	var (
 		req *request.Signin
@@ -63,5 +61,33 @@ func (h *Handlers) Signin(c echo.Context) (err error) {
 	}
 
 	res = response.NewSignin(resUcase)
+	return nil
+}
+
+func (h *Handlers) Refresh(c echo.Context) (err error) {
+	var (
+		req *request.Refresh
+		res *response.Refresh
+	)
+
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewRefresh(c); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call usecase
+	resUcase, err := h.auth.Refresh(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "refresh")
+	}
+
+	res = response.NewRefresh(resUcase)
 	return nil
 }

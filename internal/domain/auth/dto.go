@@ -5,7 +5,7 @@ package auth
 type SignupReq struct {
 	Username string
 	Email    string
-	Address  string
+	Phone    uint64
 	Password string
 }
 
@@ -16,7 +16,7 @@ type SignupRes struct {
 type RepoSignupReq struct {
 	Username     string
 	Email        string
-	Address      string
+	Phone        uint64
 	PasswordHash string
 }
 
@@ -60,6 +60,10 @@ type RefreshReq struct {
 
 type RefreshRes struct {
 	Token string
+}
+
+func NewRefreshRes(token string) *RefreshRes {
+	return &RefreshRes{Token: token}
 }
 
 // Signout

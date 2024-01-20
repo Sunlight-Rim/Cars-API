@@ -13,13 +13,39 @@ CREATE TABLE IF NOT EXISTS api.users();
 ALTER TABLE api.users ADD COLUMN IF NOT EXISTS id             SERIAL PRIMARY KEY;
 ALTER TABLE api.users ADD COLUMN IF NOT EXISTS username       VARCHAR(200) NOT NULL;
 ALTER TABLE api.users ADD COLUMN IF NOT EXISTS email          VARCHAR(200) UNIQUE NOT NULL;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS "address"      VARCHAR(200) NOT NULL;
+ALTER TABLE api.users ADD COLUMN IF NOT EXISTS phone          BIGINT NOT NULL;
 ALTER TABLE api.users ADD COLUMN IF NOT EXISTS password_hash  BYTEA NOT NULL;
 ALTER TABLE api.users ADD COLUMN IF NOT EXISTS created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS api.cars();
 ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS id             SERIAL PRIMARY KEY;
 ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS user_id        INTEGER NOT NULL;
+ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS plate          VARCHAR(6) UNIQUE NOT NULL;
+ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS model          VARCHAR(500) NOT NULL;
 ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS color          VARCHAR(200) NOT NULL;
 ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL;
 ALTER TABLE api.cars ADD CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES api.users(id);
+
+-- FILL TABLES
+
+INSERT INTO api.users (
+    username,
+    email,
+    phone,
+    password_hash
+) VALUES (
+    'johndoe',
+    'my@mail.com',
+    83641845273,
+    '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' -- "password"
+);
+
+INSERT INTO api.cars (
+    user_id,
+    plate,
+    model,
+    color
+) VALUES
+    (1, 'x333xx', 'Tesla X', 'Grey'),
+    (1, 'a111aa', 'BWM X3', 'Yellow'),
+    (1, 'a123bc', 'MClaren P1', 'Pink');

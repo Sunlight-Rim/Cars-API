@@ -60,7 +60,7 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (res *auth.RepoSignupRes, e
 		INSERT INTO api.users(
 			username,
 			email,
-			"address",
+			phone,
 			password_hash
 		)
 		VALUES ($1, $2, $3, $4)
@@ -68,7 +68,7 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (res *auth.RepoSignupRes, e
 	`,
 		req.Username,
 		req.Email,
-		req.Address,
+		req.Phone,
 		req.PasswordHash,
 	).Scan(&res.ID); err != nil {
 		return nil, errors.Wrap(err, "adding user")

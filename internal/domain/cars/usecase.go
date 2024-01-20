@@ -18,7 +18,7 @@ func (uc *Usecase) Create(req *CreateReq) (*CreateRes, error) {
 func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
 	return nil, nil
 }
-func (uc *Usecase) UpdateColor(req *UpdateColorReq) (*UpdateColorRes, error) {
+func (uc *Usecase) Update(req *UpdateReq) (*UpdateRes, error) {
 	return nil, nil
 }
 func (uc *Usecase) Delete(req *DeleteReq) (*DeleteRes, error) {

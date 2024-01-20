@@ -82,8 +82,8 @@ func (s *service) ParseExpired(token string) (*auth.Claims, error) {
 	return claims, nil
 }
 
-// SaveRefresh saves refresh token with user ID to redis.
-func (s *service) SaveRefresh(token string, userID uint64) error {
+// StoreUserRefresh saves refresh token by user ID to redis.
+func (s *service) StoreUserRefresh(token string, userID uint64) error {
 	if err := s.redis.Set(
 		context.TODO(),
 		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
@@ -96,8 +96,8 @@ func (s *service) SaveRefresh(token string, userID uint64) error {
 	return nil
 }
 
-// RemoveRefresh deletes refresh token with user ID from redis.
-func (s *service) RemoveRefresh(token string, userID uint64) error {
+// RevokeUserRefresh deletes refresh token by user ID from redis.
+func (s *service) RevokeUserRefresh(token string, userID uint64) error {
 	if err := s.redis.GetDel(
 		context.TODO(),
 		fmt.Sprintf("%s_%d_%s", refreshKeyPrefix, userID, token),
@@ -111,8 +111,8 @@ func (s *service) RemoveRefresh(token string, userID uint64) error {
 	return nil
 }
 
-// RemoveAllRefresh deletes all refresh tokens of user ID from redis.
-func (s *service) RemoveAllRefresh(userID uint64) error {
+// RevokeUserAllRefresh deletes all refresh tokens by user ID from redis.
+func (s *service) RevokeUserAllRefresh(userID uint64) error {
 	var tokens []string
 
 	if err := s.redis.Keys(

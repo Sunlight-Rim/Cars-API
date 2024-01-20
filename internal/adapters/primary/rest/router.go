@@ -22,14 +22,14 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *Handlers
 	}
 }
 
-func (h Handlers) Register(api *echo.Group) {
+func (h *Handlers) Register(api *echo.Group) {
 	// Auth
 
 	apiAuth := api.Group("/auth")
 	/*
 		swagger:route POST /api/auth/signup Auth SignupRequest
 
-		Register a new user account.
+		Register a new user.
 		Password must contain at least one special character in a range [.,\(\);:\\\/\[\]\{\}@$!%*#?&=].
 
 			schemes: http
@@ -41,7 +41,7 @@ func (h Handlers) Register(api *echo.Group) {
 	/*
 		swagger:route POST /api/auth/signin Auth SigninRequest
 
-		Sign in to account.
+		Sign in to user account.
 
 			schemes: http
 			responses:
@@ -49,9 +49,19 @@ func (h Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiAuth.POST("/signin", h.Signin)
-	// apiAuth.POST("/refresh", s.rest.Refresh)
-	// apiAuth.POST("/signout", s.rest.Signout)
-	// apiAuth.POST("/signout-all", s.rest.SignoutAll)
+	/*
+		swagger:route POST /api/auth/refresh Auth RefreshRequest
+
+		Create new token from expired.
+
+			schemes: http
+			responses:
+				200: RefreshResponse
+				default: ErrorResponse
+	*/
+	apiAuth.POST("/refresh", h.Refresh)
+	// apiAuth.POST("/signout", h.Signout)
+	// apiAuth.POST("/signout-all", h.SignoutAll)
 
 	// User
 
@@ -69,15 +79,27 @@ func (h Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiUser.GET("", h.GetMe)
-	// apiUser.PUT("/info", s.rest.UpdateUserInfo)
-	// apiUser.PUT("/password", s.rest.UpdatePassword)
-	// apiUser.DELETE("", s.rest.DeleteUser)
+	// apiUser.PUT("/info", h.UpdateUserInfo)
+	// apiUser.PUT("/password", h.UpdatePassword)
+	// apiUser.DELETE("", h.DeleteUser)
 
 	// Cars
 
-	// apiCars := api.Group("/cars")
-	// apiCars.POST("", s.rest.CreateCar)
-	// apiCars.GET("", s.rest.GetCar)
-	// apiCars.PUT("/color", s.rest.UpdateCarColor)
-	// apiCars.DELETE("", s.rest.DeleteCar)
+	apiCars := api.Group("/cars")
+	/*
+		swagger:route POST /api/cars Cars CreateCarRequest
+
+		Create car on user account.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: CreateCarResponse
+				default: ErrorResponse
+	*/
+	apiCars.POST("", h.CreateCar)
+	// apiCars.GET("", h.GetCars)
+	// apiCars.PUT("/color", h.UpdateCarColor)
+	// apiCars.DELETE("", h.DeleteCar)
 }

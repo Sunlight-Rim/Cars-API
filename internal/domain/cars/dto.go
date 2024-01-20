@@ -10,7 +10,7 @@ type CreateReq struct {
 }
 
 type CreateRes struct {
-	*Car
+	ID uint64
 }
 
 type RepoCreateReq struct {
@@ -21,7 +21,7 @@ type RepoCreateReq struct {
 }
 
 type RepoCreateRes struct {
-	*Car
+	ID uint64
 }
 
 // Get
@@ -42,25 +42,27 @@ type RepoGetRes struct {
 	Cars []Car
 }
 
-// Update color
+// Update
 
-type UpdateColorReq struct {
-	Token    string
-	CarID    uint64
-	NewColor string
+type UpdateReq struct {
+	Token string
+	CarID uint64
+	Title string
+	Color string
 }
 
-type UpdateColorRes struct {
+type UpdateRes struct {
 	*Car
 }
 
-type RepoUpdateColorReq struct {
-	UserID   uint64
-	CarID    uint64
-	NewColor string
+type RepoUpdateReq struct {
+	UserID uint64
+	CarID  uint64
+	Title  string
+	Color  string
 }
 
-type RepoUpdateColorRes struct {
+type RepoUpdateRes struct {
 	*Car
 }
 

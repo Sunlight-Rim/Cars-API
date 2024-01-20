@@ -16,6 +16,42 @@
   },
   "host": "localhost:1337",
   "paths": {
+    "/api/auth/refresh": {
+      "post": {
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Create new token from expired.",
+        "operationId": "RefreshRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "x-go-name": "Token"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/RefreshResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
     "/api/auth/signin": {
       "post": {
         "schemes": [
@@ -24,7 +60,7 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Sign in to account.",
+        "summary": "Sign in to user account.",
         "operationId": "SigninRequest",
         "parameters": [
           {
@@ -65,7 +101,7 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Register a new user account.",
+        "summary": "Register a new user.",
         "operationId": "SignupRequest",
         "parameters": [
           {
@@ -75,10 +111,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "address": {
-                  "type": "string",
-                  "x-go-name": "Address"
-                },
                 "email": {
                   "type": "string",
                   "x-go-name": "Email"
@@ -86,6 +118,11 @@
                 "password": {
                   "type": "string",
                   "x-go-name": "Password"
+                },
+                "phone": {
+                  "type": "integer",
+                  "format": "uint64",
+                  "x-go-name": "Phone"
                 },
                 "username": {
                   "type": "string",
@@ -98,6 +135,57 @@
         "responses": {
           "200": {
             "$ref": "#/responses/SignupResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/cars": {
+      "post": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Create car on user account.",
+        "operationId": "CreateCarRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "x-go-name": "Color"
+                },
+                "model": {
+                  "type": "string",
+                  "x-go-name": "Model"
+                },
+                "plate": {
+                  "type": "string",
+                  "x-go-name": "Plate"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/CreateCarResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -177,6 +265,17 @@
     }
   },
   "definitions": {
+    "CreateCar": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "ErrorResponse": {
       "type": "object",
       "title": "General error response struct.",
@@ -196,10 +295,6 @@
     "GetMe": {
       "type": "object",
       "properties": {
-        "address": {
-          "type": "string",
-          "x-go-name": "Address"
-        },
         "email": {
           "type": "string",
           "x-go-name": "Email"
@@ -209,9 +304,24 @@
           "format": "uint64",
           "x-go-name": "ID"
         },
+        "phone": {
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Phone"
+        },
         "username": {
           "type": "string",
           "x-go-name": "Username"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "Refresh": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "x-go-name": "Token"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -239,6 +349,21 @@
     }
   },
   "responses": {
+    "CreateCarResponse": {
+      "description": "Create car for user.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/CreateCar"
+          }
+        }
+      }
+    },
     "ErrorResponse": {
       "description": "General errors model. Response field is null.",
       "schema": {
@@ -288,7 +413,7 @@
       }
     },
     "SigninResponse": {
-      "description": "Successfully signed in. Returns token.",
+      "description": "Returns new token.",
       "schema": {
         "type": "object",
         "properties": {
@@ -297,7 +422,7 @@
             "example": "null"
           },
           "response": {
-            "$ref": "#/definitions/Signin"
+            "$ref": "#/definitions/Refresh"
           }
         }
       }

@@ -5,7 +5,7 @@ import "cars/internal/domain/auth"
 // Usecase
 
 type IUsecase interface {
-	GetMe(*GetMeReq) (*GetMeRes, error)
+	Get(*GetReq) (*GetRes, error)
 	UpdateInfo(*UpdateInfoReq) (*UpdateInfoRes, error)
 	UpdatePassword(*UpdatePasswordReq) error
 	Delete(*DeleteReq) (*DeleteRes, error)
@@ -14,7 +14,7 @@ type IUsecase interface {
 // Adapters
 
 type IRepository interface {
-	GetMe(*RepoGetMeReq) (*RepoGetMeRes, error)
+	Get(*RepoGetReq) (*RepoGetRes, error)
 	UpdateInfo(*RepoUpdateInfoReq) (*RepoUpdateInfoRes, error)
 	UpdatePassword(*RepoUpdatePasswordReq) error
 	Delete(*RepoDeleteReq) (*RepoDeleteRes, error)
