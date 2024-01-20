@@ -166,7 +166,7 @@
     },
     "/api/auth/signup": {
       "post": {
-        "description": "Password must contain at least one special character in a range [.,\\(\\);:\\\\\\/\\[\\]\\{\\}@$!%*#?\u0026=].",
+        "description": "Password must be longer than 6 characters and contain at least one special character.",
         "schemes": [
           "http"
         ],
@@ -223,13 +223,14 @@
             ]
           }
         ],
+        "description": "Plate must be in format of three latin letters, then three digits. For example \"aaa111\".",
         "schemes": [
           "http"
         ],
         "tags": [
           "Cars"
         ],
-        "summary": "Create car on user account.",
+        "summary": "Create car in user account.",
         "operationId": "CreateCarRequest",
         "parameters": [
           {

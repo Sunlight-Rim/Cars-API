@@ -21,6 +21,10 @@
         "error": "email is busy",
         "http_status": 422
     },
+    {
+        "error": "plate is busy",
+        "http_status": 422
+    },
 
     {
         "error": "invalid credentials",

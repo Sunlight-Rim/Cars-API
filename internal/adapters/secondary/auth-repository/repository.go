@@ -40,7 +40,7 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (*auth.RepoSignupRes, error
 	).Scan(&res.ID); err != nil {
 		// Unique constraint violation
 		if pqError := new(pq.Error); errors.As(err, &pqError) && pqError.Code == "23505" {
-			return nil, errors.Wrap(errors.EmailIsBusy, "busy email")
+			return nil, errors.Wrap(errors.EmailIsBusy, "checking email")
 		}
 
 		return nil, errors.Wrap(err, "adding user")

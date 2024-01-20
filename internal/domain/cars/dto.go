@@ -35,7 +35,7 @@ type GetReq struct {
 }
 
 type GetRes struct {
-	Cars []Car
+	Cars []*Car
 }
 
 type RepoGetReq struct {
@@ -43,7 +43,7 @@ type RepoGetReq struct {
 }
 
 type RepoGetRes struct {
-	Cars []Car
+	Cars []*Car
 }
 
 // Update
@@ -51,7 +51,7 @@ type RepoGetRes struct {
 type UpdateReq struct {
 	Token string
 	CarID uint64
-	Title string
+	Model string
 	Color string
 }
 
@@ -62,7 +62,7 @@ type UpdateRes struct {
 type RepoUpdateReq struct {
 	UserID uint64
 	CarID  uint64
-	Title  string
+	Model  string
 	Color  string
 }
 
