@@ -37,9 +37,7 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase) *server {
 
 	// Custom Echo error handler
 	s.echo.HTTPErrorHandler = func(err error, c echo.Context) {
-		var httpError *echo.HTTPError
-
-		if errors.As(err, &httpError) {
+		if httpError := new(echo.HTTPError); errors.As(err, &httpError) {
 			switch httpError.Code {
 			case http.StatusNotFound:
 				c.JSONBlob(response.Map(nil, errors.NotFound))

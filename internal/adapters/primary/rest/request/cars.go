@@ -10,7 +10,7 @@ import (
 	easyjson "github.com/mailru/easyjson"
 )
 
-var plateRegex = regexp.MustCompile(`^[a-z][0-9]{3}[a-z]{2}$`)
+var plateRegex = regexp.MustCompile(`^[a-z]{3}[0-9]{3}$`)
 
 // Create car
 

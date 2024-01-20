@@ -24,6 +24,10 @@ type RepoCreateRes struct {
 	ID uint64
 }
 
+func NewCreate(r *RepoCreateRes) *CreateRes {
+	return &CreateRes{ID: r.ID}
+}
+
 // Get
 
 type GetReq struct {

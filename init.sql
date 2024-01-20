@@ -35,17 +35,14 @@ INSERT INTO api.users (
     password_hash
 ) VALUES (
     'johndoe',
-    'my@mail.com',
+    'me@mail.com',
     83641845273,
-    '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8' -- "password"
+    E'\\x5E884898DA28047151D0E56F8DC6292773603D0D6AABBDD62A11EF721D1542D8' -- "password"
 );
 
 INSERT INTO api.cars (
-    user_id,
-    plate,
-    model,
-    color
+    user_id, plate,  model,  color
 ) VALUES
-    (1, 'x333xx', 'Tesla X', 'Grey'),
-    (1, 'a111aa', 'BWM X3', 'Yellow'),
-    (1, 'a123bc', 'MClaren P1', 'Pink');
+    (1, 'xxx333', 'Tesla X', 'Grey'),
+    (1, 'aaa111', 'BWM X3', 'Yellow'),
+    (1, 'abc123', 'MClaren P1', 'Pink');

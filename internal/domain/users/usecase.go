@@ -23,9 +23,7 @@ func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
 	}
 
 	// Get information
-	resRepo, err := uc.repo.Get(&RepoGetReq{
-		ID: claims.UserID,
-	})
+	resRepo, err := uc.repo.Get(&RepoGetReq{claims.UserID})
 	if err != nil {
 		return nil, errors.Wrap(err, "repository")
 	}

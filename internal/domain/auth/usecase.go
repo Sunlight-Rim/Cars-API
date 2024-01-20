@@ -103,7 +103,7 @@ func (uc *Usecase) Signout(req *SignoutReq) (*SignoutRes, error) {
 	return NewSignoutRes(req.Token), nil
 }
 
-// Signout parses and revokes all user tokens.
+// SignoutAll parses and revokes all user tokens.
 func (uc *Usecase) SignoutAll(req *SignoutAllReq) (*SignoutAllRes, error) {
 	// Parse token
 	claims, err := uc.token.Parse(req.Token)

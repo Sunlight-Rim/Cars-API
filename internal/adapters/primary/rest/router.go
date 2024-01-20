@@ -30,7 +30,7 @@ func (h *Handlers) Register(api *echo.Group) {
 		swagger:route POST /api/auth/signup Auth SignupRequest
 
 		Register a new user.
-		Password must contain at least one special character in a range [.,\(\);:\\\/\[\]\{\}@$!%*#?&=].
+		Password must be longer than 6 characters and contain at least one special character.
 
 			schemes: http
 			responses:
@@ -109,7 +109,8 @@ func (h *Handlers) Register(api *echo.Group) {
 	/*
 		swagger:route POST /api/cars Cars CreateCarRequest
 
-		Create car on user account.
+		Create car in user account.
+		Plate must be in format of three latin letters, then three digits. For example "aaa111".
 
 			schemes: http
 			security:
