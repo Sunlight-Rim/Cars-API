@@ -16,8 +16,8 @@ API with CRUD operations on Users and their Cars.
 	    accessToken:
 	        type: apiKey
 	        name: Authorization
-	        in: cookie
-	        description: JWT authorization token stored in a cookie.
+	        in: header
+	        description: Enter JWT authorization token with `Bearer ` prefix.
 
 swagger:meta
 */

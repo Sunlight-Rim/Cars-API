@@ -658,10 +658,10 @@
   },
   "securityDefinitions": {
     "accessToken": {
-      "description": "JWT authorization token stored in a cookie.",
+      "description": "Enter JWT authorization token with `Bearer ` prefix.",
       "type": "apiKey",
       "name": "Authorization",
-      "in": "cookie"
+      "in": "header"
     }
   }
 }

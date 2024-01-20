@@ -19,8 +19,43 @@ func New(postgres *sql.DB) *repository {
 	}
 }
 
-func (r *repository) Create(req *cars.RepoCreateReq) (*cars.RepoCreateRes, error) {
+func (r *repository) Create(req *cars.RepoCreateReq) (_ *cars.RepoCreateRes, err error) {
 	var res cars.RepoCreateRes
+
+	// Start transacton
+	tx, err := r.psql.Begin()
+	if err != nil {
+		return nil, errors.Wrap(err, "begin transaction")
+	}
+
+	// End transacton
+	defer func() {
+		if err != nil {
+			if errRollback := tx.Rollback(); errRollback != nil {
+				err = errors.Wrapf(errRollback, "rollback, %v", err)
+			}
+		} else {
+			if errCommit := tx.Commit(); errCommit != nil {
+				err = errors.Wrap(errCommit, "commit")
+			}
+		}
+	}()
+
+	// Check if plate is busy
+	var plateBusy bool
+
+	if err := tx.QueryRow(`
+		SELECT true
+		FROM api.cars
+		WHERE plate = $1
+	`, req.Plate,
+	).Scan(&plateBusy); err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return nil, errors.Wrap(err, "checking plate")
+	}
+
+	if plateBusy {
+		return nil, errors.Wrap(errors.PlateIsBusy, "busy plate")
+	}
 
 	// Add user
 	if err := r.psql.QueryRow(`
