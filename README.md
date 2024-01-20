@@ -4,7 +4,7 @@ Example Go application with Clean Architecture pattern. \
 Contains CRUD operations for Auth, Users and Cars services.
 
 
-![Scheme](https://i.ibb.co/Kxj28p6/cars-scheme.jpg)
+![Scheme](https://i.ibb.co/8NJm6fQ/cars-scheme.jpg)
 
 ### Run
 
@@ -15,7 +15,7 @@ Run with docker:
 docker-compose up --build
 ```
 
-Or run by hand (just an app):
+Or run native (just an app):
 ```bash
 make run
 ```

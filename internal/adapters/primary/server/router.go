@@ -35,6 +35,7 @@ var healthStatus = []byte("Alive!")
 
 // Register services handlers
 func (s *server) Register() {
+
 	// REST handlers
 
 	s.rest.Register(s.echo.Group("/api"))

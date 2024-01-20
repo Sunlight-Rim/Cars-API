@@ -25,7 +25,7 @@ func Start() {
 		newUsers(postgres),
 		newCars(postgres),
 
-		newTokenChecker(),
+		newTokenCheckerMW(),
 	)
 
 	// Register service handlers

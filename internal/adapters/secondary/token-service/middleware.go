@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// CheckTokenMW validates and parses token from context, saves claims to context also.
+// CheckTokenMW validates and parses token from the context and put the claims in the context.
 func CheckTokenMW(secret string) echo.MiddlewareFunc {
 	byteSecret := []byte(secret)
 

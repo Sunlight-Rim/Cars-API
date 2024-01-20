@@ -27,6 +27,7 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase, checkToke
 }
 
 func (h *Handlers) Register(api *echo.Group) {
+
 	// Auth
 
 	apiAuth := api.Group("/auth")

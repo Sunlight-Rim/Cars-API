@@ -124,6 +124,6 @@ func newCars(postgres *sql.DB) *cars.Usecase {
 	return cars.New(carsRepository.New(postgres))
 }
 
-func newTokenChecker() echo.MiddlewareFunc {
+func newTokenCheckerMW() echo.MiddlewareFunc {
 	return tokenService.CheckTokenMW(viper.GetString("token.secret"))
 }
