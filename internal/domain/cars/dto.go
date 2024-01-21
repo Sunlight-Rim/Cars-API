@@ -35,7 +35,7 @@ type GetReq struct {
 }
 
 type GetRes struct {
-	Cars []*Car
+	Cars []Car
 }
 
 type RepoGetReq struct {
@@ -43,7 +43,7 @@ type RepoGetReq struct {
 }
 
 type RepoGetRes struct {
-	Cars []*Car
+	Cars []Car
 }
 
 func NewGetRes(r *RepoGetRes) *GetRes {
@@ -60,7 +60,7 @@ type UpdateReq struct {
 }
 
 type UpdateRes struct {
-	*Car
+	Car
 }
 
 type RepoUpdateReq struct {
@@ -71,7 +71,7 @@ type RepoUpdateReq struct {
 }
 
 type RepoUpdateRes struct {
-	*Car
+	Car
 }
 
 func NewUpdateRes(r *RepoUpdateRes) *UpdateRes {
@@ -86,7 +86,7 @@ type DeleteReq struct {
 }
 
 type DeleteRes struct {
-	*Car
+	Car
 }
 
 type RepoDeleteReq struct {
@@ -95,7 +95,7 @@ type RepoDeleteReq struct {
 }
 
 type RepoDeleteRes struct {
-	*Car
+	Car
 }
 
 func NewDeleteRes(r *RepoDeleteRes) *DeleteRes {

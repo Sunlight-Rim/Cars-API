@@ -2,20 +2,21 @@ package response
 
 import users "cars/internal/domain/users"
 
-// Get me
-
-type GetMe struct {
+type User struct {
 	ID       uint64 `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Phone    uint64 `json:"phone"`
 }
 
+// Get me
+
+type GetMe struct {
+	User User `json:"user"`
+}
+
 func NewGetMe(r *users.GetRes) *GetMe {
 	return &GetMe{
-		ID:       r.ID,
-		Username: r.Username,
-		Email:    r.Email,
-		Phone:    r.Phone,
+		User: User(*r.User),
 	}
 }

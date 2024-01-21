@@ -62,6 +62,58 @@ func (h *Handlers) GetCars(c echo.Context) (err error) {
 	return nil
 }
 
-// Update
+func (h *Handlers) UpdateCar(c echo.Context) (err error) {
+	var (
+		req *request.UpdateCar
+		res *response.UpdateCar
+	)
 
-// DeleteCar
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewUpdateCar(c); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call use case
+	resUcase, err := h.cars.Update(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "update car")
+	}
+
+	res = response.NewUpdateCar(resUcase)
+	return nil
+}
+
+func (h *Handlers) DeleteCar(c echo.Context) (err error) {
+	var (
+		req *request.DeleteCar
+		res *response.DeleteCar
+	)
+
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewDeleteCar(c); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call use case
+	resUcase, err := h.cars.Delete(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "delete car")
+	}
+
+	res = response.NewDeleteCar(resUcase)
+	return nil
+}

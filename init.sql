@@ -9,22 +9,23 @@ DROP TABLE IF EXISTS api.cars;
 
 -- CREATE TABLES
 
-CREATE TABLE IF NOT EXISTS api.users();
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS id             SERIAL PRIMARY KEY;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS username       VARCHAR(200) NOT NULL;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS email          VARCHAR(200) UNIQUE NOT NULL;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS phone          BIGINT NOT NULL;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS password_hash  BYTEA NOT NULL;
-ALTER TABLE api.users ADD COLUMN IF NOT EXISTS created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL;
+CREATE TABLE IF NOT EXISTS api.users(
+    id             SERIAL PRIMARY KEY,
+    username       VARCHAR(200) NOT NULL,
+    email          VARCHAR(200) UNIQUE NOT NULL,
+    phone          BIGINT NOT NULL,
+    password_hash  BYTEA NOT NULL,
+    created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
-CREATE TABLE IF NOT EXISTS api.cars();
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS id             SERIAL PRIMARY KEY;
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS user_id        INTEGER NOT NULL;
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS plate          VARCHAR(6) UNIQUE NOT NULL;
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS model          VARCHAR(500) NOT NULL;
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS color          VARCHAR(200) NOT NULL;
-ALTER TABLE api.cars ADD COLUMN IF NOT EXISTS created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL;
-ALTER TABLE api.cars ADD CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES api.users(id);
+CREATE TABLE IF NOT EXISTS api.cars(
+    id             SERIAL PRIMARY KEY,
+    user_id        INTEGER NOT NULL REFERENCES api.users(id),
+    plate          VARCHAR(6) UNIQUE NOT NULL,
+    model          VARCHAR(500) NOT NULL,
+    color          VARCHAR(200) NOT NULL,
+    created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
 
 -- FILL TABLES
 
@@ -43,6 +44,6 @@ INSERT INTO api.users (
 INSERT INTO api.cars (
     user_id, plate,  model,  color
 ) VALUES
-    (1, 'xxx333', 'Tesla X', 'Grey'),
-    (1, 'aaa111', 'BWM X3', 'Yellow'),
-    (1, 'abc123', 'MClaren P1', 'Pink');
+    (1, 'aaa000', 'Tesla X', 'Grey'),
+    (1, 'aaa123', 'BWM X3', 'Yellow'),
+    (1, 'aaa333', 'McLaren P1', 'Pink');

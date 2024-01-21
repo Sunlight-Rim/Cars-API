@@ -35,25 +35,7 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase, checkToke
 	}
 
 	s.echo.Use(echomw.Recover(), echomw.CORS(), echomw.RequestID(), LoggerMW())
-
-	// Custom Echo error handler
-	s.echo.HTTPErrorHandler = func(err error, c echo.Context) {
-		if httpError := new(echo.HTTPError); errors.As(err, &httpError) {
-			switch {
-			case httpError.Code == http.StatusNotFound:
-				c.JSONBlob(response.Map(nil, errors.NotFound))
-
-			case httpError.Code == http.StatusMethodNotAllowed:
-				c.JSONBlob(response.Map(nil, errors.MethodNotAllowed))
-
-			case httpError.Message == echojwt.ErrJWTMissing.Message:
-				c.JSONBlob(response.Map(nil, errors.MissingToken))
-
-			case httpError.Message == echojwt.ErrJWTInvalid.Message:
-				c.JSONBlob(response.Map(nil, errors.InvalidToken))
-			}
-		}
-	}
+	s.echo.HTTPErrorHandler = errorHandler
 
 	return &s
 }
@@ -76,4 +58,23 @@ func (s *server) Shutdown(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// Custom Echo error handler.
+func errorHandler(err error, c echo.Context) {
+	if httpError := new(echo.HTTPError); errors.As(err, &httpError) {
+		switch {
+		case httpError.Code == http.StatusNotFound:
+			c.JSONBlob(response.Map(nil, errors.NotFound))
+
+		case httpError.Code == http.StatusMethodNotAllowed:
+			c.JSONBlob(response.Map(nil, errors.MethodNotAllowed))
+
+		case httpError.Message == echojwt.ErrJWTMissing.Message:
+			c.JSONBlob(response.Map(nil, errors.MissingToken))
+
+		case httpError.Message == echojwt.ErrJWTInvalid.Message:
+			c.JSONBlob(response.Map(nil, errors.InvalidToken))
+		}
+	}
 }

@@ -13,7 +13,7 @@ import (
 
 var plateRegex = regexp.MustCompile(`^[a-z]{3}[0-9]{3}$`)
 
-// Create car
+// Create
 
 type CreateCar struct {
 	UserID uint64 `json:"-"`
@@ -53,7 +53,7 @@ func (r *CreateCar) ToEntity() *cars.CreateReq {
 	}
 }
 
-// Get cars
+// Get
 
 type GetCars struct {
 	UserID uint64 `json:"-"`
@@ -66,5 +66,57 @@ func NewGetCars(c echo.Context) *GetCars {
 func (r *GetCars) ToEntity() *cars.GetReq {
 	return &cars.GetReq{
 		UserID: r.UserID,
+	}
+}
+
+// Update
+
+type UpdateCar struct {
+	UserID uint64 `json:"-"`
+	CarID  uint64 `json:"car_id"`
+	Model  string `json:"model"`
+	Color  string `json:"color"`
+}
+
+func NewUpdateCar(c echo.Context) (*UpdateCar, error) {
+	r := UpdateCar{UserID: c.Get("claims").(*auth.Claims).UserID}
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *UpdateCar) ToEntity() *cars.UpdateReq {
+	return &cars.UpdateReq{
+		UserID: r.UserID,
+		CarID:  r.CarID,
+		Model:  r.Model,
+		Color:  r.Color,
+	}
+}
+
+// Delete
+
+type DeleteCar struct {
+	UserID uint64 `json:"-"`
+	CarID  uint64 `json:"car_id"`
+}
+
+func NewDeleteCar(c echo.Context) (*DeleteCar, error) {
+	r := DeleteCar{UserID: c.Get("claims").(*auth.Claims).UserID}
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *DeleteCar) ToEntity() *cars.DeleteReq {
+	return &cars.DeleteReq{
+		UserID: r.UserID,
+		CarID:  r.CarID,
 	}
 }

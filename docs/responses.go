@@ -111,3 +111,25 @@ type GetCarsResponse struct {
 		Error any `json:"error"`
 	} `json:"body"`
 }
+
+// Returns updated car.
+// swagger:response UpdateCarResponse
+type UpdateCarResponse struct {
+	// in: body
+	Body struct {
+		Response response.UpdateCar `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns deleted car.
+// swagger:response DeleteCarResponse
+type DeleteCarResponse struct {
+	// in: body
+	Body struct {
+		Response response.DeleteCar `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}

@@ -106,7 +106,7 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiUser.GET("", h.GetMe)
-	// apiUser.PUT("", h.UpdateUserInfo)
+	// apiUser.PUT("", h.UpdateUser)
 	// apiUser.PUT("/password", h.UpdatePassword)
 	// apiUser.DELETE("", h.DeleteUser)
 
@@ -141,6 +141,30 @@ func (h *Handlers) Register(api *echo.Group) {
 				default: ErrorResponse
 	*/
 	apiCars.GET("", h.GetCars)
-	// apiCars.PUT("/color", h.UpdateCarColor)
-	// apiCars.DELETE("", h.DeleteCar)
+	/*
+		swagger:route PUT /api/cars Cars UpdateCarRequest
+
+		Get all user cars.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: UpdateCarResponse
+				default: ErrorResponse
+	*/
+	apiCars.PUT("", h.UpdateCar)
+	/*
+		swagger:route DELETE /api/cars Cars DeleteCarRequest
+
+		Get all user cars.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: DeleteCarResponse
+				default: ErrorResponse
+	*/
+	apiCars.DELETE("", h.DeleteCar)
 }

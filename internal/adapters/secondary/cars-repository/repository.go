@@ -113,7 +113,7 @@ func (r *repository) Get(req *cars.RepoGetReq) (*cars.RepoGetRes, error) {
 			return nil, errors.Wrap(err, "scan car")
 		}
 
-		res.Cars = append(res.Cars, &car)
+		res.Cars = append(res.Cars, car)
 	}
 
 	return &res, nil
@@ -155,8 +155,8 @@ func (r *repository) Delete(req *cars.RepoDeleteReq) (*cars.RepoDeleteRes, error
 	if err := r.psql.QueryRow(`
 		DELETE FROM api.cars
 		WHERE
-			id = $3 AND
-			user_id = $4
+			id = $1 AND
+			user_id = $2
 		RETURNING
 			id,
 			plate,

@@ -240,6 +240,56 @@
           }
         }
       },
+      "put": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Get all user cars.",
+        "operationId": "UpdateCarRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "car_id": {
+                  "type": "integer",
+                  "format": "uint64",
+                  "x-go-name": "CarID"
+                },
+                "color": {
+                  "type": "string",
+                  "x-go-name": "Color"
+                },
+                "model": {
+                  "type": "string",
+                  "x-go-name": "Model"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/UpdateCarResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      },
       "post": {
         "security": [
           {
@@ -284,6 +334,48 @@
         "responses": {
           "200": {
             "$ref": "#/responses/CreateCarResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Cars"
+        ],
+        "summary": "Get all user cars.",
+        "operationId": "DeleteCarRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "car_id": {
+                  "type": "integer",
+                  "format": "uint64",
+                  "x-go-name": "CarID"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/DeleteCarResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -389,6 +481,15 @@
           "type": "integer",
           "format": "uint64",
           "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "DeleteCar": {
+      "type": "object",
+      "properties": {
+        "cars": {
+          "$ref": "#/definitions/Car"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -499,6 +600,15 @@
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "UpdateCar": {
+      "type": "object",
+      "properties": {
+        "cars": {
+          "$ref": "#/definitions/Car"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
     }
   },
   "responses": {
@@ -513,6 +623,21 @@
           },
           "response": {
             "$ref": "#/definitions/CreateCar"
+          }
+        }
+      }
+    },
+    "DeleteCarsResponse": {
+      "description": "Returns deleted car.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/DeleteCar"
           }
         }
       }
@@ -651,6 +776,21 @@
           },
           "response": {
             "$ref": "#/definitions/Signup"
+          }
+        }
+      }
+    },
+    "UpdateCarsResponse": {
+      "description": "Returns updated car.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/UpdateCar"
           }
         }
       }

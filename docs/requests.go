@@ -59,3 +59,23 @@ type CreateCarRequest struct {
 		Color string `json:"color"`
 	}
 }
+
+// swagger:parameters UpdateCarRequest
+type UpdateCarRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		CarID uint64 `json:"car_id"`
+		Model string `json:"model"`
+		Color string `json:"color"`
+	}
+}
+
+// swagger:parameters DeleteCarRequest
+type DeleteCarRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		CarID uint64 `json:"car_id"`
+	}
+}
