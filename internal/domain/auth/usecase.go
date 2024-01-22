@@ -139,7 +139,12 @@ func (uc *Usecase) SignoutAll(req *SignoutAllReq) (*SignoutAllRes, error) {
 		return nil, errors.Wrap(err, "parse token")
 	}
 
-	// Revoke all tokens
+	// Check if token is stored and remove them
+	if err := uc.token.RevokeUserRefresh(claims.UserID, req.Token); err != nil {
+		return nil, errors.Wrap(err, "revoke token")
+	}
+
+	// Revoke all other tokens
 	tokens, err := uc.token.RevokeUserRefreshAll(claims.UserID)
 	if err != nil {
 		return nil, errors.Wrap(err, "revoke all tokens")
