@@ -57,6 +57,17 @@ type RefreshResponse struct {
 	} `json:"body"`
 }
 
+// Returns active tokens.
+// swagger:response SessionsResponse
+type SessionsResponse struct {
+	// in: body
+	Body struct {
+		Response response.Sessions `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
 // Returns requested token.
 // swagger:response SignoutResponse
 type SignoutResponse struct {
@@ -85,6 +96,40 @@ type GetMeResponse struct {
 	// in: body
 	Body struct {
 		Response response.GetMe `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns user updated account data.
+// swagger:response UpdateInfoResponse
+type UpdateInfoResponse struct {
+	// in: body
+	Body struct {
+		Response response.UpdateInfo `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Response field is null.
+// swagger:response UpdatePasswordResponse
+type UpdatePasswordResponse struct {
+	// in: body
+	Body struct {
+		// example: null
+		Response any `json:"response"`
+		// example: null
+		Error any `json:"error"`
+	} `json:"body"`
+}
+
+// Returns user deleted account data.
+// swagger:response DeleteUserResponse
+type DeleteUserResponse struct {
+	// in: body
+	Body struct {
+		Response response.DeleteUser `json:"response"`
 		// example: null
 		Error any `json:"error"`
 	} `json:"body"`

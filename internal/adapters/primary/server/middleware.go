@@ -9,7 +9,7 @@ import (
 )
 
 // Response logger
-func LoggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
+func loggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
 	return echomw.RequestLoggerWithConfig(echomw.RequestLoggerConfig{
 		LogURI:       true,
 		LogMethod:    true,

@@ -1,8 +1,6 @@
 package response
 
-import (
-	"cars/internal/domain/auth"
-)
+import "cars/internal/domain/auth"
 
 // General response struct.
 type Response struct {
@@ -19,11 +17,11 @@ type ErrorResponse struct {
 // Signup
 
 type Signup struct {
-	ID uint64 `json:"id"`
+	UserID uint64 `json:"id"`
 }
 
 func NewSignup(r *auth.SignupRes) *Signup {
-	return &Signup{ID: r.ID}
+	return &Signup{UserID: r.UserID}
 }
 
 // Signin
@@ -44,6 +42,16 @@ type Refresh struct {
 
 func NewRefresh(r *auth.RefreshRes) *Refresh {
 	return &Refresh{Token: r.Token}
+}
+
+// Sessions
+
+type Sessions struct {
+	Tokens []string `json:"tokens"`
+}
+
+func NewSessions(r *auth.SessionsRes) *Sessions {
+	return &Sessions{Tokens: r.Tokens}
 }
 
 // Signout

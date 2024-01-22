@@ -1,7 +1,7 @@
 /*
 Package app Cars API
 
-API with CRUD operations on Users and their Cars.
+API with CRUD operations with Users and their Cars.
 
 		version: 0.1
 		host: localhost:1337

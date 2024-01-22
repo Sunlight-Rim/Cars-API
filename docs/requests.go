@@ -31,6 +31,15 @@ type RefreshRequest struct {
 	}
 }
 
+// swagger:parameters SessionsRequest
+type SessionsRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Token string `json:"token"`
+	}
+}
+
 // swagger:parameters SignoutRequest
 type SignoutRequest struct {
 	// in: body
@@ -46,6 +55,25 @@ type SignoutAllRequest struct {
 	// required: true
 	Body struct {
 		Token string `json:"token"`
+	}
+}
+
+// swagger:parameters UpdateInfoRequest
+type UpdateInfoRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		Username string `json:"username"`
+		Phone    uint64 `json:"phone"`
+	}
+}
+
+// swagger:parameters UpdatePasswordRequest
+type UpdatePasswordRequest struct {
+	// in: body
+	// required: true
+	Body struct {
+		NewPassword string `json:"new_password"`
 	}
 }
 

@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handlers) Signup(c echo.Context) (err error) {
+func (h *Handlers) signup(c echo.Context) (err error) {
 	var (
 		req *request.Signup
 		res *response.Signup
@@ -36,7 +36,7 @@ func (h *Handlers) Signup(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) Signin(c echo.Context) (err error) {
+func (h *Handlers) signin(c echo.Context) (err error) {
 	var (
 		req *request.Signin
 		res *response.Signin
@@ -64,7 +64,7 @@ func (h *Handlers) Signin(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) Refresh(c echo.Context) (err error) {
+func (h *Handlers) refresh(c echo.Context) (err error) {
 	var (
 		req *request.Refresh
 		res *response.Refresh
@@ -92,7 +92,35 @@ func (h *Handlers) Refresh(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) Signout(c echo.Context) (err error) {
+func (h *Handlers) sessions(c echo.Context) (err error) {
+	var (
+		req *request.Sessions
+		res *response.Sessions
+	)
+
+	// Send response
+	defer func() {
+		if errResp := c.JSONBlob(response.Map(res, err)); errResp != nil {
+			err = errors.Wrapf(errResp, "response, %v", err)
+		}
+	}()
+
+	// Parse request
+	if req, err = request.NewSessions(c); err != nil {
+		return errors.Wrap(err, "request")
+	}
+
+	// Call usecase
+	resUcase, err := h.auth.Sessions(req.ToEntity())
+	if err != nil {
+		return errors.Wrap(err, "get sessions")
+	}
+
+	res = response.NewSessions(resUcase)
+	return nil
+}
+
+func (h *Handlers) signout(c echo.Context) (err error) {
 	var (
 		req *request.Signout
 		res *response.Signout
@@ -120,7 +148,7 @@ func (h *Handlers) Signout(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) SignoutAll(c echo.Context) (err error) {
+func (h *Handlers) signoutAll(c echo.Context) (err error) {
 	var (
 		req *request.SignoutAll
 		res *response.SignoutAll

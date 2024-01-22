@@ -43,7 +43,7 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: SignupResponse
 				default: ErrorResponse
 	*/
-	apiAuth.POST("/signup", h.Signup)
+	apiAuth.POST("/signup", h.signup)
 	/*
 		swagger:route POST /api/auth/signin Auth SigninRequest
 
@@ -54,18 +54,29 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: SigninResponse
 				default: ErrorResponse
 	*/
-	apiAuth.POST("/signin", h.Signin)
+	apiAuth.POST("/signin", h.signin)
 	/*
 		swagger:route POST /api/auth/refresh Auth RefreshRequest
 
-		Create new token from expired, also revoke expired.
+		Create new token from expired and revoke expired.
 
 			schemes: http
 			responses:
 				200: RefreshResponse
 				default: ErrorResponse
 	*/
-	apiAuth.POST("/refresh", h.Refresh)
+	apiAuth.POST("/refresh", h.refresh)
+	/*
+		swagger:route POST /api/auth/sessions Auth SessionsRequest
+
+		List all user active sessions (refresh tokens).
+
+			schemes: http
+			responses:
+				200: SessionsResponse
+				default: ErrorResponse
+	*/
+	apiAuth.POST("/sessions", h.sessions)
 	/*
 		swagger:route POST /api/auth/signout Auth SignoutRequest
 
@@ -76,7 +87,7 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: SignoutResponse
 				default: ErrorResponse
 	*/
-	apiAuth.POST("/signout", h.Signout)
+	apiAuth.POST("/signout", h.signout)
 	/*
 		swagger:route POST /api/auth/signout-all Auth SignoutAllRequest
 
@@ -87,16 +98,16 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: SignoutAllResponse
 				default: ErrorResponse
 	*/
-	apiAuth.POST("/signout-all", h.SignoutAll)
+	apiAuth.POST("/signout-all", h.signoutAll)
 
 	// User
 
 	apiUser := api.Group("/user", h.checkTokenMW)
 
 	/*
-		swagger:route GET /api/user User null
+		swagger:route GET /api/user User GetMeNull
 
-		Sign in to account.
+		Get user account information.
 
 			schemes: http
 			security:
@@ -105,10 +116,46 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: GetMeResponse
 				default: ErrorResponse
 	*/
-	apiUser.GET("", h.GetMe)
-	// apiUser.PUT("", h.UpdateUser)
-	// apiUser.PUT("/password", h.UpdatePassword)
-	// apiUser.DELETE("", h.DeleteUser)
+	apiUser.GET("", h.getMe)
+	/*
+		swagger:route PUT /api/user User UpdateInfoRequest
+
+		Update user general information.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: UpdateInfoResponse
+				default: ErrorResponse
+	*/
+	apiUser.PUT("", h.updateInfo)
+	/*
+		swagger:route PUT /api/user/password User UpdatePasswordRequest
+
+		Change user password.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: UpdatePasswordResponse
+				default: ErrorResponse
+	*/
+	apiUser.PUT("/password", h.updatePassword)
+	/*
+		swagger:route DELETE /api/user User DeleteUserNull
+
+		Delete user account.
+
+			schemes: http
+			security:
+				accessToken: []
+			responses:
+				200: DeleteUserResponse
+				default: ErrorResponse
+	*/
+	apiUser.DELETE("", h.deleteUser)
 
 	// Cars
 
@@ -127,9 +174,9 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: CreateCarResponse
 				default: ErrorResponse
 	*/
-	apiCars.POST("", h.CreateCar)
+	apiCars.POST("", h.createCar)
 	/*
-		swagger:route GET /api/cars Cars null
+		swagger:route GET /api/cars Cars GetCarsNull
 
 		Get all user cars.
 
@@ -140,11 +187,11 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: GetCarsResponse
 				default: ErrorResponse
 	*/
-	apiCars.GET("", h.GetCars)
+	apiCars.GET("", h.getCars)
 	/*
 		swagger:route PUT /api/cars Cars UpdateCarRequest
 
-		Get all user cars.
+		Update car data.
 
 			schemes: http
 			security:
@@ -153,11 +200,11 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: UpdateCarResponse
 				default: ErrorResponse
 	*/
-	apiCars.PUT("", h.UpdateCar)
+	apiCars.PUT("", h.updateCar)
 	/*
 		swagger:route DELETE /api/cars Cars DeleteCarRequest
 
-		Get all user cars.
+		Delete user car.
 
 			schemes: http
 			security:
@@ -166,5 +213,5 @@ func (h *Handlers) Register(api *echo.Group) {
 				200: DeleteCarResponse
 				default: ErrorResponse
 	*/
-	apiCars.DELETE("", h.DeleteCar)
+	apiCars.DELETE("", h.deleteCar)
 }

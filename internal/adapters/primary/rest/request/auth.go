@@ -104,6 +104,28 @@ func (r *Refresh) ToEntity() *auth.RefreshReq {
 	}
 }
 
+// Sessions
+
+type Sessions struct {
+	Token string `json:"token"`
+}
+
+func NewSessions(c echo.Context) (*Sessions, error) {
+	var r Sessions
+
+	if err := easyjson.UnmarshalFromReader(c.Request().Body, &r); err != nil {
+		return nil, errors.Wrapf(errors.InvalidRequestFormat, "parsing, %v", err)
+	}
+
+	return &r, nil
+}
+
+func (r *Sessions) ToEntity() *auth.SessionsReq {
+	return &auth.SessionsReq{
+		Token: r.Token,
+	}
+}
+
 // Signout
 
 type Signout struct {

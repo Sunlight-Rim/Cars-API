@@ -34,7 +34,7 @@ func New(auth auth.IUsecase, users users.IUsecase, cars cars.IUsecase, checkToke
 		graphql: graphql.New(auth, users, cars, checkTokenMW),
 	}
 
-	s.echo.Use(echomw.Recover(), echomw.CORS(), echomw.RequestID(), LoggerMW())
+	s.echo.Use(echomw.Recover(), echomw.CORS(), echomw.RequestID(), loggerMW())
 	s.echo.HTTPErrorHandler = errorHandler
 
 	return &s

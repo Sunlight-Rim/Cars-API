@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handlers) CreateCar(c echo.Context) (err error) {
+func (h *Handlers) createCar(c echo.Context) (err error) {
 	var (
 		req *request.CreateCar
 		res *response.CreateCar
@@ -36,7 +36,7 @@ func (h *Handlers) CreateCar(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) GetCars(c echo.Context) (err error) {
+func (h *Handlers) getCars(c echo.Context) (err error) {
 	var (
 		req *request.GetCars
 		res *response.GetCars
@@ -62,7 +62,7 @@ func (h *Handlers) GetCars(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) UpdateCar(c echo.Context) (err error) {
+func (h *Handlers) updateCar(c echo.Context) (err error) {
 	var (
 		req *request.UpdateCar
 		res *response.UpdateCar
@@ -90,7 +90,7 @@ func (h *Handlers) UpdateCar(c echo.Context) (err error) {
 	return nil
 }
 
-func (h *Handlers) DeleteCar(c echo.Context) (err error) {
+func (h *Handlers) deleteCar(c echo.Context) (err error) {
 	var (
 		req *request.DeleteCar
 		res *response.DeleteCar

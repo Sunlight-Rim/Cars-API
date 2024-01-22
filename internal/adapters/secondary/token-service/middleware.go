@@ -1,6 +1,7 @@
 package tokenService
 
 import (
+	"cars/internal/domain/auth"
 	"cars/pkg/errors"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -15,9 +16,9 @@ func CheckTokenMW(secret string) echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
 		ContextKey: "claims",
 		ParseTokenFunc: func(c echo.Context, token string) (interface{}, error) {
-			jwtClaims := make(jwt.MapClaims)
+			var claims auth.Claims
 
-			if _, err := jwt.ParseWithClaims(token, jwtClaims, func(*jwt.Token) (any, error) {
+			if _, err := jwt.ParseWithClaims(token, &claims, func(*jwt.Token) (any, error) {
 				return byteSecret, nil
 			}); err != nil {
 				if errors.Is(err, jwt.ErrTokenExpired) {
@@ -26,12 +27,7 @@ func CheckTokenMW(secret string) echo.MiddlewareFunc {
 				return nil, errors.Wrapf(errors.InvalidToken, "invalid token, %v", err)
 			}
 
-			claims, err := parse(jwtClaims)
-			if err != nil {
-				return nil, errors.Wrap(err, "parse claims")
-			}
-
-			return claims, nil
+			return &claims, nil
 		},
 	})
 }

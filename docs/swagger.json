@@ -10,7 +10,7 @@
   ],
   "swagger": "2.0",
   "info": {
-    "description": "API with CRUD operations on Users and their Cars.",
+    "description": "API with CRUD operations with Users and their Cars.",
     "title": "Cars API",
     "version": "0.1"
   },
@@ -24,7 +24,7 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Create new token from expired, also revoke expired.",
+        "summary": "Create new token from expired and revoke expired.",
         "operationId": "RefreshRequest",
         "parameters": [
           {
@@ -45,6 +45,42 @@
         "responses": {
           "200": {
             "$ref": "#/responses/RefreshResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/auth/sessions": {
+      "post": {
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "List all user active sessions (refresh tokens).",
+        "operationId": "SessionsRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "x-go-name": "Token"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SessionsResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -230,7 +266,7 @@
           "Cars"
         ],
         "summary": "Get all user cars.",
-        "operationId": "null",
+        "operationId": "GetCarsNull",
         "responses": {
           "200": {
             "$ref": "#/responses/GetCarsResponse"
@@ -254,7 +290,7 @@
         "tags": [
           "Cars"
         ],
-        "summary": "Get all user cars.",
+        "summary": "Update car data.",
         "operationId": "UpdateCarRequest",
         "parameters": [
           {
@@ -354,7 +390,7 @@
         "tags": [
           "Cars"
         ],
-        "summary": "Get all user cars.",
+        "summary": "Delete user car.",
         "operationId": "DeleteCarRequest",
         "parameters": [
           {
@@ -398,11 +434,125 @@
         "tags": [
           "User"
         ],
-        "summary": "Sign in to account.",
-        "operationId": "null",
+        "summary": "Get user account information.",
+        "operationId": "GetMeNull",
         "responses": {
           "200": {
             "$ref": "#/responses/GetMeResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user general information.",
+        "operationId": "UpdateInfoRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "phone": {
+                  "type": "integer",
+                  "format": "uint64",
+                  "x-go-name": "Phone"
+                },
+                "username": {
+                  "type": "string",
+                  "x-go-name": "Username"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/UpdateInfoResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete user account.",
+        "operationId": "DeleteUserNull",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/DeleteUserResponse"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/user/password": {
+      "put": {
+        "security": [
+          {
+            "accessToken": [
+              "[]"
+            ]
+          }
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "User"
+        ],
+        "summary": "Change user password.",
+        "operationId": "UpdatePasswordRequest",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "new_password": {
+                  "type": "string",
+                  "x-go-name": "NewPassword"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/UpdatePasswordResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -498,6 +648,15 @@
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
     },
+    "DeleteUser": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "ErrorResponse": {
       "type": "object",
       "title": "General error response struct.",
@@ -546,6 +705,19 @@
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
     },
+    "Sessions": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-name": "Tokens"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
     "Signin": {
       "type": "object",
       "properties": {
@@ -585,7 +757,7 @@
         "id": {
           "type": "integer",
           "format": "uint64",
-          "x-go-name": "ID"
+          "x-go-name": "UserID"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -595,6 +767,15 @@
       "properties": {
         "car": {
           "$ref": "#/definitions/Car"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "UpdateInfo": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -651,6 +832,21 @@
           },
           "response": {
             "$ref": "#/definitions/DeleteCar"
+          }
+        }
+      }
+    },
+    "DeleteUserResponse": {
+      "description": "Returns user deleted account data.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/DeleteUser"
           }
         }
       }
@@ -733,6 +929,21 @@
         }
       }
     },
+    "SessionsResponse": {
+      "description": "Returns active tokens.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/Sessions"
+          }
+        }
+      }
+    },
     "SigninResponse": {
       "description": "Returns token.",
       "schema": {
@@ -804,6 +1015,37 @@
           },
           "response": {
             "$ref": "#/definitions/UpdateCar"
+          }
+        }
+      }
+    },
+    "UpdateInfoResponse": {
+      "description": "Returns user updated account data.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "$ref": "#/definitions/UpdateInfo"
+          }
+        }
+      }
+    },
+    "UpdatePasswordResponse": {
+      "description": "Response field is null.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "x-go-name": "Error",
+            "example": "null"
+          },
+          "response": {
+            "x-go-name": "Response",
+            "example": "null"
           }
         }
       }

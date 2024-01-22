@@ -70,7 +70,7 @@ func (r *repository) Signup(req *auth.RepoSignupReq) (_ *auth.RepoSignupRes, err
 		req.Email,
 		req.Phone,
 		req.PasswordHash,
-	).Scan(&res.ID); err != nil {
+	).Scan(&res.UserID); err != nil {
 		return nil, errors.Wrap(err, "adding user")
 	}
 
@@ -86,16 +86,32 @@ func (r *repository) Signin(req *auth.RepoSigninReq) (*auth.RepoSigninRes, error
 		WHERE
 			email = $1 AND
 			password_hash = $2 AND
-			removed = FALSE
+			deleted = FALSE
 	`,
 		req.Email,
 		req.PasswordHash,
-	).Scan(&res.ID); err != nil {
+	).Scan(&res.UserID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errors.Wrap(errors.InvalidCredentials, "invalid credentials")
 		}
 
 		return nil, errors.Wrap(err, "checking email")
+	}
+
+	return &res, nil
+}
+
+func (r *repository) IsDeleted(req *auth.RepoIsDeletedReq) (*auth.RepoIsDeletedRes, error) {
+	var res auth.RepoIsDeletedRes
+
+	if err := r.psql.QueryRow(`
+		SELECT true
+		FROM api.users
+		WHERE
+			id = $1 AND
+			deleted = true
+	`, req.UserID).Scan(&res.Deleted); err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return nil, errors.Wrap(err, "checking is deleted")
 	}
 
 	return &res, nil

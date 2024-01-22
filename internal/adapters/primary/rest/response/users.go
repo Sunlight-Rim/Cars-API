@@ -1,6 +1,6 @@
 package response
 
-import users "cars/internal/domain/users"
+import "cars/internal/domain/users"
 
 type User struct {
 	ID       uint64 `json:"id"`
@@ -17,6 +17,30 @@ type GetMe struct {
 
 func NewGetMe(r *users.GetRes) *GetMe {
 	return &GetMe{
+		User: User(*r.User),
+	}
+}
+
+// Update
+
+type UpdateInfo struct {
+	User User `json:"user"`
+}
+
+func NewUpdateInfo(r *users.UpdateInfoRes) *UpdateInfo {
+	return &UpdateInfo{
+		User: User(*r.User),
+	}
+}
+
+// Delete
+
+type DeleteUser struct {
+	User User `json:"user"`
+}
+
+func NewDeleteUser(r *users.DeleteRes) *DeleteUser {
+	return &DeleteUser{
 		User: User(*r.User),
 	}
 }

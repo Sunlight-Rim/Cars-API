@@ -47,13 +47,13 @@ func (uc *Usecase) Signin(req *SigninReq) (*SigninRes, error) {
 	}
 
 	// Create token
-	token, err := uc.token.Create(resRepo.ID)
+	token, err := uc.token.Create(resRepo.UserID)
 	if err != nil {
 		return nil, errors.Wrap(err, "create token")
 	}
 
 	// Store token
-	if err := uc.token.StoreUserRefresh(resRepo.ID, token); err != nil {
+	if err := uc.token.StoreUserRefresh(resRepo.UserID, token); err != nil {
 		return nil, errors.Wrap(err, "store token")
 	}
 
@@ -73,6 +73,17 @@ func (uc *Usecase) Refresh(req *RefreshReq) (*RefreshRes, error) {
 		return nil, errors.Wrap(err, "revoke token")
 	}
 
+	// Check if user account is not deleted
+	repoRes, err := uc.repo.IsDeleted(&RepoIsDeletedReq{
+		UserID: claims.UserID,
+	})
+	if err != nil {
+		return nil, errors.Wrap(err, "check if account deleted")
+	}
+	if repoRes.Deleted {
+		return nil, errors.Wrap(errors.DeletedAccount, "account was deleted")
+	}
+
 	// Create new token
 	token, err := uc.token.Create(claims.UserID)
 	if err != nil {
@@ -85,6 +96,23 @@ func (uc *Usecase) Refresh(req *RefreshReq) (*RefreshRes, error) {
 	}
 
 	return NewRefreshRes(token), nil
+}
+
+// Sessions returns all stored user refresh tokens.
+func (uc *Usecase) Sessions(req *SessionsReq) (*SessionsRes, error) {
+	// Parse token
+	claims, err := uc.token.Parse(req.Token)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse token")
+	}
+
+	// Get tokens
+	tokens, err := uc.token.ListUserRefresh(claims.UserID)
+	if err != nil {
+		return nil, errors.Wrap(err, "get all tokens")
+	}
+
+	return NewSessionsRes(tokens), nil
 }
 
 // Signout parses and revokes requested token.

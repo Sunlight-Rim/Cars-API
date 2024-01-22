@@ -28,6 +28,9 @@ var ResponseList []byte = []byte(`{
     "3233457132": {
         "en": "Invalid request format"
     },
+    "3278175777": {
+        "en": "Deleted account"
+    },
     "3482864722": {
         "en": "Missing token"
     },
@@ -54,6 +57,7 @@ const (
 	CodeMissingToken          uint32 = 3482864722
 	CodeInvalidToken          uint32 = 2352452421
 	CodeExpiredToken          uint32 = 1760844835
+	CodeDeletedAccount        uint32 = 3278175777
 )
 
 // Error Variables
@@ -68,6 +72,7 @@ var (
 	MissingToken          error = New("missing token", CodeMissingToken)
 	InvalidToken          error = New("invalid token", CodeInvalidToken)
 	ExpiredToken          error = New("expired token", CodeExpiredToken)
+	DeletedAccount        error = New("deleted account", CodeDeletedAccount)
 )
 
 // Hash map data by error codes
@@ -82,6 +87,7 @@ var HttpResponse = map[uint32]map[string]any{
 	3482864722: {"status": 401, "text": "Missing token"},
 	2352452421: {"status": 401, "text": "Invalid token"},
 	1760844835: {"status": 401, "text": "Expired token"},
+	3278175777: {"status": 403, "text": "Deleted account"},
 }
 
 // GetHTTPErrData returning http status, error message and error code

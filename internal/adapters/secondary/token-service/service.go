@@ -45,9 +45,9 @@ func (s *service) Create(userID uint64) (string, error) {
 
 // Parse token.
 func (s *service) Parse(token string) (*auth.Claims, error) {
-	jwtClaims := make(jwt.MapClaims)
+	var claims auth.Claims
 
-	if _, err := jwt.ParseWithClaims(token, jwtClaims, func(*jwt.Token) (any, error) {
+	if _, err := jwt.ParseWithClaims(token, &claims, func(*jwt.Token) (any, error) {
 		return s.secret, nil
 	}); err != nil {
 		if errors.Is(err, jwt.ErrTokenExpired) {
@@ -56,30 +56,20 @@ func (s *service) Parse(token string) (*auth.Claims, error) {
 		return nil, errors.Wrapf(errors.InvalidToken, "invalid token, %v", err)
 	}
 
-	claims, err := parse(jwtClaims)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse claims")
-	}
-
-	return claims, nil
+	return &claims, nil
 }
 
 // Parse expired token.
 func (s *service) ParseExpired(token string) (*auth.Claims, error) {
-	jwtClaims := make(jwt.MapClaims)
+	var claims auth.Claims
 
-	if _, err := jwt.ParseWithClaims(token, jwtClaims, func(*jwt.Token) (any, error) {
+	if _, err := jwt.ParseWithClaims(token, &claims, func(*jwt.Token) (any, error) {
 		return s.secret, nil
 	}); err != nil && !errors.Is(err, jwt.ErrTokenExpired) {
 		return nil, errors.Wrapf(errors.InvalidToken, "invalid token, %v", err)
 	}
 
-	claims, err := parse(jwtClaims)
-	if err != nil {
-		return nil, errors.Wrap(err, "parse claims")
-	}
-
-	return claims, nil
+	return &claims, nil
 }
 
 // StoreUserRefresh saves refresh token by user ID to redis.
@@ -94,6 +84,19 @@ func (s *service) StoreUserRefresh(userID uint64, token string) error {
 	}
 
 	return nil
+}
+
+func (s *service) ListUserRefresh(userID uint64) ([]string, error) {
+	var tokens []string
+
+	if err := s.redis.Keys(
+		context.TODO(),
+		fmt.Sprintf("%s_%d_*", refreshKeyPrefix, userID),
+	).ScanSlice(&tokens); err != nil {
+		return nil, errors.Wrap(err, "get all tokens")
+	}
+
+	return tokens, nil
 }
 
 // RevokeUserRefresh deletes refresh token by user ID from redis.
@@ -130,17 +133,4 @@ func (s *service) RevokeUserRefreshAll(userID uint64) ([]string, error) {
 	}
 
 	return tokens, nil
-}
-
-// Parse token claims to struct.
-func parse(jwtClaims jwt.MapClaims) (*auth.Claims, error) {
-	// Numeric values is float64 for "encoding/json"
-	userID, ok := jwtClaims["user_id"].(float64)
-	if !ok {
-		return nil, errors.Wrap(errors.InvalidToken, "user_id")
-	}
-
-	return &auth.Claims{
-		UserID: uint64(userID),
-	}, nil
 }

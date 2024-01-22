@@ -42,5 +42,10 @@
     {
         "error": "expired token",
         "http_status": 401
+    },
+    
+    {
+        "error": "deleted account",
+        "http_status": 403
     }
 ]

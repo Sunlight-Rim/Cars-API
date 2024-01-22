@@ -10,7 +10,7 @@ type SignupReq struct {
 }
 
 type SignupRes struct {
-	ID uint64
+	UserID uint64
 }
 
 type RepoSignupReq struct {
@@ -21,11 +21,11 @@ type RepoSignupReq struct {
 }
 
 type RepoSignupRes struct {
-	ID uint64
+	UserID uint64
 }
 
 func NewSignupRes(r *RepoSignupRes) *SignupRes {
-	return &SignupRes{ID: r.ID}
+	return &SignupRes{UserID: r.UserID}
 }
 
 // Signin
@@ -45,11 +45,21 @@ type RepoSigninReq struct {
 }
 
 type RepoSigninRes struct {
-	ID uint64
+	UserID uint64
 }
 
 func NewSigninRes(token string) *SigninRes {
 	return &SigninRes{Token: token}
+}
+
+// Is deleted
+
+type RepoIsDeletedReq struct {
+	UserID uint64
+}
+
+type RepoIsDeletedRes struct {
+	Deleted bool
 }
 
 // Refresh
@@ -64,6 +74,20 @@ type RefreshRes struct {
 
 func NewRefreshRes(token string) *RefreshRes {
 	return &RefreshRes{Token: token}
+}
+
+// Sessions
+
+type SessionsReq struct {
+	Token string
+}
+
+type SessionsRes struct {
+	Tokens []string
+}
+
+func NewSessionsRes(tokens []string) *SessionsRes {
+	return &SessionsRes{Tokens: tokens}
 }
 
 // Signout
