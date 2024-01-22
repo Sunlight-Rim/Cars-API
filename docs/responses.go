@@ -1,6 +1,8 @@
 package model
 
-import "cars/internal/adapters/primary/rest/response"
+import (
+	"cars/internal/adapters/primary/rest/response"
+)
 
 // General errors model. Response field is null.
 // swagger:response ErrorResponse
@@ -23,6 +25,11 @@ type ErrorsListResponse struct {
 		} `json:"error_code"`
 	} `json:"body"`
 }
+
+// Informs whether the service is alive or not.
+// swagger:response HealthResponse
+// in: body
+type _ string
 
 // Returns user ID.
 // swagger:response SignupResponse

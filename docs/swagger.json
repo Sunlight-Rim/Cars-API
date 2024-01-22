@@ -592,10 +592,7 @@
         "operationId": "null",
         "responses": {
           "200": {
-            "description": "string",
-            "schema": {
-              "$ref": "#/definitions/string"
-            }
+            "$ref": "#/responses/HealthResponse"
           },
           "default": {
             "$ref": "#/responses/ErrorResponse"
@@ -912,6 +909,12 @@
             "$ref": "#/definitions/GetMe"
           }
         }
+      }
+    },
+    "HealthResponse": {
+      "description": "Informs whether the service is alive or not.",
+      "schema": {
+        "type": "string"
       }
     },
     "RefreshResponse": {

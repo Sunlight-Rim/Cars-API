@@ -66,7 +66,7 @@ func (s *server) Register() {
 
 			schemes: https
 			responses:
-				200: body:string
+				200: HealthResponse
 				default: ErrorResponse
 	*/
 	s.echo.GET("/health", func(c echo.Context) error {
