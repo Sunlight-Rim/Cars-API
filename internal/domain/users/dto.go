@@ -44,6 +44,10 @@ type RepoUpdateInfoRes struct {
 	*User
 }
 
+func NewUpdateInfoRes(r *RepoUpdateInfoRes) *UpdateInfoRes {
+	return &UpdateInfoRes{User: r.User}
+}
+
 // Update password
 
 type UpdatePasswordReq struct {
@@ -72,4 +76,8 @@ type RepoDeleteReq struct {
 
 type RepoDeleteRes struct {
 	*User
+}
+
+func NewDeleteRes(r *RepoDeleteRes) *DeleteRes {
+	return &DeleteRes{User: r.User}
 }

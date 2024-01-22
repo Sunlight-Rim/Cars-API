@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS api.users(
     email          VARCHAR(200) UNIQUE NOT NULL,
     phone          BIGINT NOT NULL,
     password_hash  BYTEA NOT NULL,
+    removed        BOOLEAN DEFAULT FALSE NOT NULL,
     created_at     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 

@@ -86,7 +86,8 @@ func (r *repository) Delete(req *users.RepoDeleteReq) (*users.RepoDeleteRes, err
 	}}
 
 	if err := r.psql.QueryRow(`
-		DELETE api.users
+		UPDATE api.users
+		SET removed = TRUE
 		WHERE id = $1
 		RETURNING
 			username,

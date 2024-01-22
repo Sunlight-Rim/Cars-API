@@ -85,7 +85,8 @@ func (r *repository) Signin(req *auth.RepoSigninReq) (*auth.RepoSigninRes, error
 		FROM api.users
 		WHERE
 			email = $1 AND
-			password_hash = $2
+			password_hash = $2 AND
+			removed = FALSE
 	`,
 		req.Email,
 		req.PasswordHash,
