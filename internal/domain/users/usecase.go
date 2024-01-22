@@ -25,6 +25,7 @@ func (uc *Usecase) Get(req *GetReq) (*GetRes, error) {
 	return NewGetMeRes(resRepo), nil
 }
 
+// UpdateInfo updates user data.
 func (uc *Usecase) UpdateInfo(req *UpdateInfoReq) (*UpdateInfoRes, error) {
 	return nil, nil
 }

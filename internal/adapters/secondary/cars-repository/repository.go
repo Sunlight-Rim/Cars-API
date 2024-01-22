@@ -5,8 +5,6 @@ import (
 
 	"cars/internal/domain/cars"
 	"cars/pkg/errors"
-
-	"github.com/lib/pq"
 )
 
 type repository struct {
@@ -57,7 +55,7 @@ func (r *repository) Create(req *cars.RepoCreateReq) (_ *cars.RepoCreateRes, err
 		return nil, errors.Wrap(errors.PlateIsBusy, "busy plate")
 	}
 
-	// Add user
+	// Create new car
 	if err := r.psql.QueryRow(`
 		INSERT INTO api.cars(
 			user_id,
@@ -73,11 +71,6 @@ func (r *repository) Create(req *cars.RepoCreateReq) (_ *cars.RepoCreateRes, err
 		req.Model,
 		req.Color,
 	).Scan(&res.ID); err != nil {
-		// Unique constraint violation
-		if pqError := new(pq.Error); errors.As(err, &pqError) && pqError.Code == "23505" {
-			return nil, errors.Wrap(errors.PlateIsBusy, "checking plate")
-		}
-
 		return nil, errors.Wrap(err, "adding car")
 	}
 
@@ -113,16 +106,19 @@ func (r *repository) Get(req *cars.RepoGetReq) (*cars.RepoGetRes, error) {
 			return nil, errors.Wrap(err, "scan car")
 		}
 
-		res.Cars = append(res.Cars, car)
+		res.Cars = append(res.Cars, &car)
 	}
 
 	return &res, nil
 }
 
 func (r *repository) Update(req *cars.RepoUpdateReq) (*cars.RepoUpdateRes, error) {
-	var res cars.RepoUpdateRes
+	var res = cars.RepoUpdateRes{Car: cars.Car{
+		ID:    req.CarID,
+		Model: req.Model,
+		Color: req.Color,
+	}}
 
-	// Add user
 	if err := r.psql.QueryRow(`
 		UPDATE api.cars
 		SET
@@ -141,24 +137,20 @@ func (r *repository) Update(req *cars.RepoUpdateReq) (*cars.RepoUpdateRes, error
 		return nil, errors.Wrap(err, "updating car")
 	}
 
-	res.ID = req.CarID
-	res.Model = req.Model
-	res.Color = req.Color
-
 	return &res, nil
 }
 
 func (r *repository) Delete(req *cars.RepoDeleteReq) (*cars.RepoDeleteRes, error) {
-	var res cars.RepoDeleteRes
+	var res = cars.RepoDeleteRes{Car: cars.Car{
+		ID: req.CarID,
+	}}
 
-	// Add user
 	if err := r.psql.QueryRow(`
 		DELETE FROM api.cars
 		WHERE
 			id = $1 AND
 			user_id = $2
 		RETURNING
-			id,
 			plate,
 			model,
 			color
@@ -166,7 +158,6 @@ func (r *repository) Delete(req *cars.RepoDeleteReq) (*cars.RepoDeleteRes, error
 		req.CarID,
 		req.UserID,
 	).Scan(
-		&res.ID,
 		&res.Plate,
 		&res.Model,
 		&res.Color,

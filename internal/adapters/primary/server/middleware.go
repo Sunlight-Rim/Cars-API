@@ -37,23 +37,21 @@ func LoggerMW() func(next echo.HandlerFunc) echo.HandlerFunc {
 				"error_location": errLocation,
 			})
 
-			if values.Error == nil {
+			switch _, ok := errors.GetCode(values.Error); {
+			case values.Error == nil:
 				log.Info("Successful")
-				return nil
-			}
 
-			if _, ok := errors.GetCode(values.Error); ok {
+			case ok:
 				log.Warn("Catched error")
-				return nil
-			}
 
-			if errors.Is(values.Error, echo.ErrNotFound) ||
-				errors.Is(values.Error, echo.ErrMethodNotAllowed) {
+			case errors.Is(values.Error, echo.ErrNotFound),
+				errors.Is(values.Error, echo.ErrMethodNotAllowed):
 				log.Warn("Not found")
-				return nil
+
+			default:
+				log.Error("Unregistered internal error")
 			}
 
-			log.Error("Unregistered internal error")
 			return nil
 		},
 	})

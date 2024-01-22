@@ -458,21 +458,25 @@
     "Car": {
       "type": "object",
       "properties": {
-        "Color": {
-          "type": "string"
+        "color": {
+          "type": "string",
+          "x-go-name": "Color"
         },
-        "ID": {
+        "id": {
           "type": "integer",
-          "format": "uint64"
+          "format": "uint64",
+          "x-go-name": "ID"
         },
-        "Model": {
-          "type": "string"
+        "model": {
+          "type": "string",
+          "x-go-name": "Model"
         },
-        "Plate": {
-          "type": "string"
+        "plate": {
+          "type": "string",
+          "x-go-name": "Plate"
         }
       },
-      "x-go-package": "cars/internal/domain/cars"
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
     },
     "CreateCar": {
       "type": "object",
@@ -488,7 +492,7 @@
     "DeleteCar": {
       "type": "object",
       "properties": {
-        "cars": {
+        "car": {
           "$ref": "#/definitions/Car"
         }
       },
@@ -526,23 +530,8 @@
     "GetMe": {
       "type": "object",
       "properties": {
-        "email": {
-          "type": "string",
-          "x-go-name": "Email"
-        },
-        "id": {
-          "type": "integer",
-          "format": "uint64",
-          "x-go-name": "ID"
-        },
-        "phone": {
-          "type": "integer",
-          "format": "uint64",
-          "x-go-name": "Phone"
-        },
-        "username": {
-          "type": "string",
-          "x-go-name": "Username"
+        "user": {
+          "$ref": "#/definitions/User"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -604,8 +593,32 @@
     "UpdateCar": {
       "type": "object",
       "properties": {
-        "cars": {
+        "car": {
           "$ref": "#/definitions/Car"
+        }
+      },
+      "x-go-package": "cars/internal/adapters/primary/rest/response"
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "ID"
+        },
+        "phone": {
+          "type": "integer",
+          "format": "uint64",
+          "x-go-name": "Phone"
+        },
+        "username": {
+          "type": "string",
+          "x-go-name": "Username"
         }
       },
       "x-go-package": "cars/internal/adapters/primary/rest/response"
@@ -627,7 +640,7 @@
         }
       }
     },
-    "DeleteCarsResponse": {
+    "DeleteCarResponse": {
       "description": "Returns deleted car.",
       "schema": {
         "type": "object",
@@ -780,7 +793,7 @@
         }
       }
     },
-    "UpdateCarsResponse": {
+    "UpdateCarResponse": {
       "description": "Returns updated car.",
       "schema": {
         "type": "object",

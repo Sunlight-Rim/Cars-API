@@ -31,7 +31,7 @@ func NewGetCars(r *cars.GetRes) *GetCars {
 	var res GetCars
 
 	for i := range r.Cars {
-		res.Cars = append(res.Cars, Car(r.Cars[i]))
+		res.Cars = append(res.Cars, Car(*r.Cars[i]))
 	}
 
 	return &res

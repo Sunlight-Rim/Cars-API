@@ -35,7 +35,7 @@ type GetReq struct {
 }
 
 type GetRes struct {
-	Cars []Car
+	Cars []*Car
 }
 
 type RepoGetReq struct {
@@ -43,7 +43,7 @@ type RepoGetReq struct {
 }
 
 type RepoGetRes struct {
-	Cars []Car
+	Cars []*Car
 }
 
 func NewGetRes(r *RepoGetRes) *GetRes {
